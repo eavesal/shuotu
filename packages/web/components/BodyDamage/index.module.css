@@ -1,0 +1,11 @@
+svg.svg {
+  overflow: visible;
+  padding: 0 var(--size-sl);
+  width: var(--size-ml);
+  height: var(--size-mxl);
+}
+
+.svg text {
+  font-size: var(--font-size-h4);
+  fill: var(--text-color-secondary);
+}

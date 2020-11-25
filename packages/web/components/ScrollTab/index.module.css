@@ -1,0 +1,28 @@
+.tabs {
+  margin: 0;
+  padding: var(--size-sm) 0;
+  list-style: none;
+  border-bottom: 1px solid var(--border-color-primary);
+
+  display: flex;
+  color: var(--text-color-secondary);
+  font-size: var(--font-size-text-xs);
+  text-align: center;
+}
+
+.tabs li {
+  padding: 0 var(--size-sl);
+  cursor: pointer;
+}
+
+.title {
+  font-size: var(--font-size-h5);
+}
+
+.tabs li.active .title {
+  color: var(--text-color-primary);
+}
+
+.item {
+  padding: var(--size-sm) var(--size-sl);
+}

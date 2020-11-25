@@ -1,0 +1,27 @@
+.main {
+  position: absolute;
+  width: var(--size-ls);
+  background-color: var(--background-dark-image);
+  font-size: var(--font-size-text-m);
+  color: var(--text-color-secondary);
+  z-index: 10;
+}
+
+.tr {
+  top: calc(100% + var(--size-sm));
+  right: 0;
+}
+
+.option {
+  padding: var(--size-sl) var(--size-sm);
+}
+
+.option:hover {
+  cursor: pointer;
+  color: var(--text-color-primary);
+  background-color: var(--background-dark-card);
+}
+
+.optgroup:not(:last-child) {
+  border-bottom: 1px solid var(--border-color-primary);
+}

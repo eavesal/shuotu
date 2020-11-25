@@ -1,0 +1,10 @@
+.tooltip {
+  position: fixed;
+  display: none;
+
+  padding: var(--size-ss) var(--size-sm);
+  background-color: var(--background-dark-popup);
+  border: 1px solid var(--border-color-primary);
+  border-radius: 2px;
+  z-index: 100;
+}

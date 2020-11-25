@@ -1,0 +1,33 @@
+.main {
+  position: relative;
+  width: 100%;
+  height: var(--size-ll);
+}
+
+.ops {
+  position: absolute;
+  right: var(--size-ss);
+  bottom: var(--size-ss);
+
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-dark-popup);
+  border-radius: 2px;
+}
+
+.ops > span {
+  display: inline-block;
+  width: var(--size-ms);
+  height: var(--size-ms);
+  font-size: var(--font-size-text-xl);
+  text-align: center;
+}
+
+.ops > span:not(:last-child) {
+  border-bottom: 1px solid var(--border-color-primary);
+}
+
+.ops > span:hover {
+  background-color: var(--background-button-origin);
+  cursor: pointer;
+}

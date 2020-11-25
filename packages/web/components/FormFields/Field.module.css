@@ -1,0 +1,103 @@
+.field label {
+  display: block;
+  margin: var(--size-ss) 0;
+}
+
+.field input,
+.field select {
+  box-sizing: border-box;
+  width: 100%;
+  height: var(--size-ms);
+
+  color: #fff;
+  font-size: small;
+  background: transparent;
+  padding: var(--size-ss) var(--size-sm);
+  border: 1px solid var(--border-color-primary);
+  border-radius: 2px;
+}
+
+.field input[type='checkbox'] {
+  width: var(--size-sl);
+  height: var(--size-sl);
+}
+
+.multiCheckBox {
+  margin: 0;
+  list-style: none;
+  padding: 0;
+}
+
+.multiCheckBox li {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.multiCheckBox input {
+  margin-right: var(--size-sm);
+}
+
+.field input:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--border-color-active);
+}
+
+.hideSpin {
+  -moz-appearance: textfield;
+}
+
+.hideSpin::-webkit-outer-spin-button,
+.hideSpin::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.tabRadio {
+  display: flex;
+
+  border-radius: 2px;
+}
+
+.tabRadio label {
+  box-sizing: border-box;
+  margin: 0;
+  height: var(--size-ms);
+  padding: var(--size-ss) var(--size-sm);
+  border-top: 1px solid var(--border-color-primary);
+  border-bottom: 1px solid var(--border-color-primary);
+}
+
+.tabRadio input[type='radio'] {
+  display: none;
+}
+
+.tabRadioItem {
+  flex: 1;
+  text-align: center;
+}
+
+.tabRadioItem:first-child label {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  border-left: 1px solid var(--border-color-primary);
+}
+
+.tabRadioItem:last-child label {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border-right: 1px solid var(--border-color-primary);
+}
+
+.tabRadioItem:not(:last-child) {
+  border-right: 1px solid var(--border-color-primary);
+}
+
+.tabRadio input[type='radio']:checked + label {
+  background-color: var(--background-dark-popup);
+}
+
+.tabRadio input[type='radio']:hover + label {
+  cursor: pointer;
+  background-color: var(--background-dark-card);
+}

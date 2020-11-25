@@ -1,0 +1,32 @@
+.table {
+  width: 100%;
+  border-spacing: 0px;
+}
+
+.table tr {
+  height: var(--size-ms);
+}
+
+.table td {
+  border: 1px solid var(--border-color-primary);
+  padding: 0 var(--size-sm);
+  background: var(--background-dark-image);
+}
+
+.table td:first-child {
+  color: var(--text-color-secondary);
+  background: var(--background-dark-text);
+}
+
+.table td:not(:last-child) {
+  border-right: none;
+}
+
+.table tr:not(:last-child) td {
+  /* border-right: none; */
+  border-bottom: none;
+}
+
+.table tr:hover td {
+  background: var(--background-dark-card);
+}

@@ -1,0 +1,11 @@
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-color-secondary);
+  margin-top: var(--size-sxl);
+}
+
+.loading > div {
+  margin-left: var(--size-sm);
+}

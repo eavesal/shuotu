@@ -1,0 +1,11 @@
+.ops {
+  margin-top: var(--size-mm);
+
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ops > button {
+  margin-left: var(--size-sl);
+  padding: var(--size-ss) var(--size-sxl);
+}

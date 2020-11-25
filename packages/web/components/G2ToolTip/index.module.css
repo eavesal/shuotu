@@ -1,0 +1,48 @@
+.tooltip {
+  box-shadow: rgba(27, 27, 27, 0.9) 0px 0px 10px !important;
+  background-color: var(--background-dark-popup) !important;
+  padding: var(--size-sm) var(--size-sl) !important;
+  line-height: var(--font-size-text-s);
+
+  transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s, top 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s;
+  border-radius: 2px;
+}
+
+.title {
+  font-size: var(--font-size-text-s);
+}
+
+.list {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+  margin-top: var(--size-sxl);
+}
+
+.item {
+  display: flex;
+  list-style-type: none;
+  min-width: var(--size-ml);
+  margin-top: var(--size-sm);
+}
+
+.marker {
+  display: inline-block;
+  width: var(--size-sm);
+  height: var(--size-sm);
+  border-radius: 50%;
+  margin-top: 2px;
+  margin-right: var(--size-sm);
+}
+
+.name {
+  color: var(--text-color-secondary);
+}
+
+.value {
+  flex: 1;
+  color: var(--text-color-primary);
+  text-align: right;
+
+  margin-left: var(--size-sl);
+}

@@ -1,0 +1,13 @@
+.footer {
+  border-top: 1px solid var(--border-color-primary);
+  padding-top: var(--size-sl);
+  margin-top: var(--size-sl);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer > button {
+  height: 34px;
+}

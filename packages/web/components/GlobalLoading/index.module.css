@@ -1,0 +1,27 @@
+.mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.main {
+  background: var(--background-dark-card);
+  padding: var(--size-sxl) var(--size-mm);
+  border-radius: 4px;
+}
+
+.text {
+  margin-top: var(--size-sl);
+  color: var(--text-color-secondary);
+}
+
+.loading {
+  margin: 0 auto;
+}

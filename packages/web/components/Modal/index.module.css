@@ -1,0 +1,56 @@
+.mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 50;
+}
+
+.page {
+  box-sizing: border-box;
+  max-width: 640px;
+  margin-top: var(--size-sxl);
+  margin-left: auto;
+  margin-right: auto;
+
+  background: var(--background-dark-card);
+}
+
+.title {
+  position: relative;
+  height: var(--size-mm);
+  line-height: var(--size-mm);
+  margin: 0;
+
+  text-align: center;
+
+  background: var(--background-dark-image);
+}
+
+.close {
+  position: absolute;
+  right: var(--size-sl);
+  top: 0;
+  bottom: 0;
+
+  display: inline-block;
+  width: var(--size-ms);
+
+  background: var(--text-color-secondary);
+  mask: url('../../../icons/close.svg') center no-repeat;
+  mask-size: contain;
+  cursor: pointer;
+}
+
+.close:hover {
+  background: var(--text-color-primary);
+}
+
+.content {
+  padding: var(--size-sxl) var(--size-ms);
+}

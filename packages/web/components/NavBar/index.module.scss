@@ -1,0 +1,52 @@
+.main {
+  position: relative;
+  z-index: 10;
+
+  height: var(--size-ml);
+  background: var(--background-dark-text);
+  border-bottom: 1px solid var(--border-color-primary);
+}
+
+.main > * {
+  height: 100%;
+}
+
+.nav {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: var(--font-size-h2);
+
+  & .sub {
+    font-size: var(--font-size-text-xxs);
+  }
+}
+
+.logo:visited {
+  color: var(--color-link);
+}
+
+.menuWrapper {
+  height: var(--size-ml);
+  display: flex;
+  align-items: center;
+}
+
+@media (--screen-phone) {
+  .logo {
+    display: none;
+  }
+
+  .menu {
+    margin-left: 0;
+  }
+}

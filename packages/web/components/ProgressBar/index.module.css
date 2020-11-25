@@ -1,0 +1,41 @@
+.main {
+  position: relative;
+  width: 100%;
+  height: var(--size-sxl);
+  background: var(--background-dark-card);
+  border-radius: 4px;
+
+  text-align: center;
+  line-height: var(--size-sxl);
+  overflow: hidden;
+}
+
+.front {
+  position: absolute;
+  width: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.text {
+  position: relative;
+  color: var(--text-color-primary);
+}
+
+.sucess {
+  background-color: var(--color-success-dark);
+}
+
+.info {
+  background-color: var(--color-info-dark);
+}
+
+.warn {
+  background-color: var(--color-warn-dark);
+}
+
+.error {
+  background-color: var(--color-error-dark);
+}
