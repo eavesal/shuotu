@@ -40,10 +40,20 @@
     }
   }
 
-  img {
+  .cover {
     width: var(--size-ls);
     height: var(--size-ls);
     object-fit: cover;
+  }
+
+  .logo {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: var(--size-mm);
+    margin: 0 auto;
+
+    height: var(--size-mm);
   }
 
   span {
@@ -51,9 +61,9 @@
     left: 0;
     right: 0;
     bottom: 0;
-    height: var(--size-ms);
-    line-height: var(--size-ms);
-    font-size: var(--font-size-text-m);
+    height: var(--size-mm);
+    line-height: var(--size-mm);
+    font-size: var(--font-size-text-l);
 
     background-image: linear-gradient(0deg, rgba(12, 12, 12, 1), rgba(12, 12, 12, 0.9));
     box-shadow: 0 0 20px 0 rgba(12, 12, 12, 0.9);
