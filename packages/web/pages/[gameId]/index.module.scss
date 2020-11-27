@@ -1,22 +1,35 @@
 .main {
-  h1,
-  h6 {
-    font-weight: lighter;
-    text-align: center;
+  position: relative;
+
+  & > * {
+    position: relative;
+  }
+
+  .bg {
+    height: var(--size-ls);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
   h1 {
+    margin-top: var(--size-mm);
+    font-weight: lighter;
+    text-align: center;
     color: var(--text-color-primary);
+    text-shadow: 0px 0 10px rgba(0, 0, 0, 1);
   }
 
-  h6 {
-    margin-top: 0;
+  .content {
+    box-shadow: 0px -8px 20px rgba(0, 0, 0, 0.5);
   }
 }
 
-.games {
+.maps {
   list-style: none;
   padding: 0;
+  margin: 0;
+  padding-top: var(--size-ms);
 
   display: flex;
   flex-wrap: wrap;
@@ -47,16 +60,6 @@
     width: 100%;
     height: var(--size-ls);
     object-fit: cover;
-  }
-
-  .logo {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: var(--size-mm);
-    margin: 0 auto;
-
-    height: var(--size-mm);
   }
 
   span {

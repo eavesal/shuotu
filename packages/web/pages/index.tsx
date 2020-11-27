@@ -1,4 +1,5 @@
 import { InferGetStaticPropsType } from 'next'
+import Link from 'next/link'
 import NavBar from '../components/NavBar'
 import { getAll } from './api/game'
 
@@ -13,7 +14,6 @@ export const getStaticProps = async () => {
 }
 
 export default function Home({ games }: InferGetStaticPropsType<typeof getStaticProps>) {
-  console.log(games)
   return (
     <div className={styles.main}>
       <NavBar />
@@ -22,11 +22,15 @@ export default function Home({ games }: InferGetStaticPropsType<typeof getStatic
       <div className="view">
         <ul className={styles.games}>
           {games.map(x => (
-            <li key={x.id}>
-              <img className={styles.cover} src={x.cover} />
-              <img className={styles.logo} src={x.logo} />
-              <span>{x.name}</span>
-            </li>
+            <Link href={`/${x.id}`} key={x.id}>
+              <li>
+                <div className={styles.wrapper}>
+                  <img className={styles.cover} src={x.cover} />
+                  <img className={styles.logo} src={x.logo} />
+                  <span>{x.name}</span>
+                </div>
+              </li>
+            </Link>
           ))}
         </ul>
       </div>

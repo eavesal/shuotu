@@ -5,3 +5,8 @@ export enum Games {
   Pubg = 'pubg',
   ZeldaBow = 'zelda_bow',
 }
+
+export enum OSS {
+  QINIU = 'http://qkdxzqxhx.hn-bkt.clouddn.com',
+  QINGYUN = 'https://tushuo.sh1a.qingstor.com',
+}
