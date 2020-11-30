@@ -1,5 +1,10 @@
+import React from 'react'
+import { EventEmitter } from 'events'
 import { InferGetStaticPropsType } from 'next'
+import { MapEventEmitter } from '../../../components/Map/context'
+import { MapEvents } from '../../../components/Map/enum'
 import StaticMap from '../../../components/Map/StaticMap'
+import useInstance from '../../../hooks/useInstance'
 import { Game } from '../../../types'
 import { getAll, getGameById } from '../../api/game'
 
@@ -36,10 +41,25 @@ export const getStaticProps = async ({ params }) => {
   }
 }
 
-export default function MapSets({ game, map }: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function MapSets({ map }: InferGetStaticPropsType<typeof getStaticProps>) {
+  const ee = useInstance<EventEmitter>(() => new EventEmitter())
+
   return (
     <div className={styles.main}>
-      <StaticMap tilePrefix={map.tile.prefix} mapPixelSize={map.mapPixelSize} mapBoundingBox={map.mapBoundingBox} />
+      <MapEventEmitter.Provider value={ee}>
+        <StaticMap tilePrefix={map.tile.prefix} mapPixelSize={map.mapPixelSize} mapBoundingBox={map.mapBoundingBox} />
+      </MapEventEmitter.Provider>
+      <div className={styles.ops}>
+        <span className="iconfont" onClick={() => ee.emit(MapEvents.ZOOM_IN)}>
+          &#xe664;
+        </span>
+        <span className="iconfont" onClick={() => ee.emit(MapEvents.ZOOM_OUT)}>
+          &#xe67a;
+        </span>
+        <span className="iconfont" onClick={() => ee.emit(MapEvents.ZOOM_INITIAL)}>
+          &#xe709;
+        </span>
+      </div>
     </div>
   )
 }

@@ -40,7 +40,7 @@ export default function Modal({ children, visiable, onMaskClicked, title }: Moda
           >
             <h5 className={styles.title}>
               {title}
-              <div className={styles.close} onClick={onMaskClicked}></div>
+              <div className={styles.close} onClick={onMaskClicked} />
             </h5>
             <div className={styles.content}>{children}</div>
           </motion.div>

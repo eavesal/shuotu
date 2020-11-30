@@ -1,11 +1,12 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { select } from 'd3-selection'
+import { max } from 'ramda'
 
 import Svg from '../Svg/Svg'
 import { SvgSelection } from './types'
 import Zoom from './Zoom'
 import Tile from './Tile'
-import { max } from 'ramda'
+import { MapContext, MapContextType } from './context'
 
 // 用户获取d3的svg实例
 function useD3Svg() {
@@ -23,16 +24,6 @@ function useD3Svg() {
   return { ref: svgRefCallback, svg }
 }
 
-interface MapContextType {
-  mapPixelSize: [number, number]
-  mapBoundingBox: [number, number, number, number]
-}
-
-export const MapContext = React.createContext<MapContextType>({
-  mapPixelSize: [0, 0],
-  mapBoundingBox: [0, 0, 0, 0],
-})
-
 interface StaticMapProps extends MapContextType {
   tilePrefix: string
   tileSize?: number
@@ -41,13 +32,13 @@ interface StaticMapProps extends MapContextType {
 
 export default function StaticMap({ mapBoundingBox, mapPixelSize, tileSize = 256, tilePrefix, children }: StaticMapProps) {
   const { svg, ref } = useD3Svg()
-  const maxScaleExtent = useMemo(() => max(...mapPixelSize), mapPixelSize)
+  const maxScaleExtent = useMemo(() => max(...mapPixelSize), [mapPixelSize])
   const mapContextValue = useMemo(
     () => ({
       mapPixelSize,
       mapBoundingBox,
     }),
-    [...mapPixelSize, ...mapBoundingBox],
+    [mapPixelSize, mapBoundingBox],
   )
 
   return (

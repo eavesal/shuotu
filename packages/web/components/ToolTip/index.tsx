@@ -19,25 +19,25 @@ function getCss(position: AnchorPosition, rect: DOMRect): CSSProperties {
       return {
         left: x + width / 2,
         top: y - DEFAULT_GAP,
-        transform: `translate(-50%, -100%)`,
+        transform: 'translate(-50%, -100%)',
       }
     case AnchorPosition.RIGHT:
       return {
         left: x + width + DEFAULT_GAP,
         top: y + height / 2,
-        transform: `translate(0, -50%)`,
+        transform: 'translate(0, -50%)',
       }
     case AnchorPosition.LEFT:
       return {
         left: x - DEFAULT_GAP,
         top: y + height / 2,
-        transform: `translate(-100%, -50%)`,
+        transform: 'translate(-100%, -50%)',
       }
     case AnchorPosition.BOTTOM:
       return {
         left: x + width / 2,
         top: y + height + DEFAULT_GAP,
-        transform: `translate(-50%, 0)`,
+        transform: 'translate(-50%, 0)',
       }
     default:
       return {}

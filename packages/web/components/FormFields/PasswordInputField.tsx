@@ -24,7 +24,7 @@ function passwordValidator(password: string) {
   const alphabet = password.match(/[a-zA-Z]+/)
   const isOnlyAlphabet = alphabet && alphabet[0].length === password.length
 
-  return isOnlyAlphabet || isOnlyNumbers ? false : true
+  return !(isOnlyAlphabet || isOnlyNumbers)
 }
 
 export default function PasswordInputField({

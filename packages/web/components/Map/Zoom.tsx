@@ -1,8 +1,10 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { zoom, zoomIdentity } from 'd3-zoom'
 import { Point, SvgSelection, Transform } from './types'
 import { max, min } from 'ramda'
 import { SvgContext } from '../Svg/Svg'
+import { MapEventEmitter } from './context'
+import { MapEvents } from './enum'
 
 const DEFAULT_TRANSFORM = {
   k: 0,
@@ -30,10 +32,11 @@ function cleanEvent(svg: SvgSelection) {
 }
 
 // 绑定SVG事件，并返回Transform
-export function useZoom(svg: SvgSelection, scaleExtent: Point, transform?: Transform, disabled: boolean = false) {
+export function useZoom(svg: SvgSelection, scaleExtent: Point, transform?: Transform, disabled = false) {
   const { width, height } = useContext(SvgContext)
   const [minExtentSize, maxExtentSize] = scaleExtent
   const [T, setT] = useState(DEFAULT_TRANSFORM)
+  const ee = useContext(MapEventEmitter)
 
   const zoomer = useMemo(() => {
     return zoom<SVGSVGElement, null>()
@@ -67,6 +70,29 @@ export function useZoom(svg: SvgSelection, scaleExtent: Point, transform?: Trans
       cleanEvent(svg)
     }
   }, [zoomer, svg, width, height, scaleExtent, transform, disabled])
+
+  const onZoomIn = useCallback(() => zoomer.scaleBy(svg, 1.5), [zoomer, svg])
+  const onZoomOut = useCallback(() => zoomer.scaleBy(svg, 1 / 1.5), [zoomer, svg])
+  const onZoomInitial = useCallback(
+    () => svg.call(zoomer.transform, zoomIdentity.translate(width >> 1, height >> 1).scale(minExtentSize)),
+    [zoomer, svg, width, height, minExtentSize],
+  )
+
+  useEffect(() => {
+    if (!ee) {
+      return
+    }
+
+    ee.on(MapEvents.ZOOM_IN, onZoomIn)
+    ee.on(MapEvents.ZOOM_OUT, onZoomOut)
+    ee.on(MapEvents.ZOOM_INITIAL, onZoomInitial)
+
+    return () => {
+      ee.off(MapEvents.ZOOM_IN, onZoomIn)
+      ee.off(MapEvents.ZOOM_OUT, onZoomOut)
+      ee.off(MapEvents.ZOOM_INITIAL, onZoomInitial)
+    }
+  }, [zoomer, ee, onZoomIn, onZoomOut, onZoomInitial])
 
   return T
 }

@@ -1,3 +1,4 @@
+import React from 'react'
 import { InferGetStaticPropsType } from 'next'
 import Link from 'next/link'
 import NavBar from '../components/NavBar'

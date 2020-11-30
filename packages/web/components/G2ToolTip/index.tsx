@@ -27,7 +27,7 @@ export default function G2ToolTip<T>({ title, items, children, listStyle }: G2To
       <ul className={styles.list} style={listStyle}>
         {items.map(x => (
           <li className={styles.item} key={x.name}>
-            <span className={styles.marker} style={{ background: x.color }}></span>
+            <span className={styles.marker} style={{ background: x.color }} />
             <span className={styles.name}>{x.name}</span>
             <span className={styles.value}>{x.value}</span>
           </li>

@@ -3,3 +3,34 @@
   width: 100%;
   height: 100%;
 }
+
+.ops {
+  position: absolute;
+  right: var(--size-ss);
+  bottom: var(--size-ss);
+
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-dark-popup);
+  border-radius: 2px;
+  overflow: hidden;
+
+  & > span {
+    display: inline-block;
+    width: var(--size-ms);
+    height: var(--size-ms);
+    line-height: var(--size-ms);
+    font-size: var(--font-size-text-xl);
+    text-align: center;
+  }
+
+  & > span:not(:last-child) {
+    border-bottom: 1px solid var(--border-color-primary);
+  }
+
+  & > span:hover {
+    background-color: var(--background-button-origin);
+    color: #fff;
+    cursor: pointer;
+  }
+}
