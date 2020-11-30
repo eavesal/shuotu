@@ -1,4 +1,5 @@
 import { InferGetStaticPropsType } from 'next'
+import StaticMap from '../../../components/Map/StaticMap'
 import { Game } from '../../../types'
 import { getAll, getGameById } from '../../api/game'
 
@@ -23,16 +24,22 @@ export const getStaticPaths = async () => {
 }
 
 export const getStaticProps = async ({ params }) => {
-  const { gameId } = params
+  const { gameId, mapId } = params
   const game = getGameById(gameId)
+  const map = game.maps.find(x => x.id === mapId)
 
   return {
     props: {
       game,
+      map,
     },
   }
 }
 
-export default function MapSets({ game }: InferGetStaticPropsType<typeof getStaticProps>) {
-  return <div className={styles.main}>hello</div>
+export default function MapSets({ game, map }: InferGetStaticPropsType<typeof getStaticProps>) {
+  return (
+    <div className={styles.main}>
+      <StaticMap tilePrefix={map.tile.prefix} mapPixelSize={map.mapPixelSize} mapBoundingBox={map.mapBoundingBox} />
+    </div>
+  )
 }

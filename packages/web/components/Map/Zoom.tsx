@@ -49,7 +49,7 @@ export function useZoom(svg: SvgSelection, scaleExtent: Point, transform?: Trans
           k: event.transform.k,
         }),
       )
-  }, [height, maxExtentSize, minExtentSize, width])
+  }, [width, height, minExtentSize, maxExtentSize])
 
   useEffect(() => {
     if (!svg) {

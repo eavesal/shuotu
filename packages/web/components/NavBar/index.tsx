@@ -11,7 +11,7 @@ export default function NavBar() {
           <div className={styles.menuWrapper}>
             <Link href="/">
               <a className={styles.logo}>
-                <div>图说坊</div>
+                <div>说图坊</div>
                 <div className={styles.sub}>MapTalks Workshop</div>
               </a>
             </Link>
