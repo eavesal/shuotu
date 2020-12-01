@@ -14,6 +14,7 @@
   background-color: var(--background-dark-popup);
   border-radius: 2px;
   overflow: hidden;
+  font-weight: lighter;
 
   & > span {
     display: inline-block;
@@ -28,6 +29,7 @@
     border-bottom: 1px solid var(--border-color-primary);
   }
 
+  .active,
   & > span:hover {
     background-color: var(--background-button-origin);
     color: #fff;

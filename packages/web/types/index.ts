@@ -1,5 +1,13 @@
 import { Games } from './enums'
 
+export type MapLocation = {
+  id: number
+  label: string
+  // 可能取值1,2,3,5
+  sig: number
+  pos: [number, number]
+}
+
 export type MapSet = {
   id: string
   name: string
@@ -11,6 +19,7 @@ export type MapSet = {
     size: number
     prefix: string
   }
+  locations: MapLocation[]
 }
 
 export type Game = {

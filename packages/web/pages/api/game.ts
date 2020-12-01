@@ -50,6 +50,7 @@ export function getAll(): Game[] {
             size: 256,
             prefix: getTile(Games.Pubg, 'camp_jackal', 'v1'),
           },
+          locations: [],
         },
         {
           id: 'erangel',
@@ -61,6 +62,7 @@ export function getAll(): Game[] {
             size: 256,
             prefix: getTile(Games.Pubg, 'camp_jackal', 'v1'),
           },
+          locations: [],
         },
         {
           id: 'karakin',
@@ -72,6 +74,7 @@ export function getAll(): Game[] {
             size: 256,
             prefix: getTile(Games.Pubg, 'camp_jackal', 'v1'),
           },
+          locations: [],
         },
         {
           id: 'miramar',
@@ -83,6 +86,7 @@ export function getAll(): Game[] {
             size: 256,
             prefix: getTile(Games.Pubg, 'camp_jackal', 'v1'),
           },
+          locations: [],
         },
         {
           id: 'paramo',
@@ -94,6 +98,7 @@ export function getAll(): Game[] {
             size: 256,
             prefix: getTile(Games.Pubg, 'camp_jackal', 'v1'),
           },
+          locations: [],
         },
         {
           id: 'sanhok',
@@ -105,6 +110,7 @@ export function getAll(): Game[] {
             size: 256,
             prefix: getTile(Games.Pubg, 'camp_jackal', 'v1'),
           },
+          locations: [],
         },
         {
           id: 'vikendi',
@@ -116,6 +122,7 @@ export function getAll(): Game[] {
             size: 256,
             prefix: getTile(Games.Pubg, 'camp_jackal', 'v1'),
           },
+          locations: [],
         },
       ],
     },
