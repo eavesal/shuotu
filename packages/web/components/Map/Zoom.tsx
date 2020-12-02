@@ -45,6 +45,7 @@ export function useZoom(svg: SvgSelection, scaleExtent: Point, transform?: Trans
         [0, 0],
         [width, height],
       ])
+      .duration(400)
       .on('zoom', event =>
         setT({
           x: event.transform.x,
@@ -71,10 +72,21 @@ export function useZoom(svg: SvgSelection, scaleExtent: Point, transform?: Trans
     }
   }, [zoomer, svg, width, height, scaleExtent, transform, disabled])
 
-  const onZoomIn = useCallback(() => zoomer.scaleBy(svg, 1.5), [zoomer, svg])
-  const onZoomOut = useCallback(() => zoomer.scaleBy(svg, 1 / 1.5), [zoomer, svg])
+  const onZoomIn = useCallback(() => svg.transition().duration(400).call(zoomer.scaleBy, 1.5), [zoomer, svg])
+  const onZoomOut = useCallback(
+    () =>
+      svg
+        .transition()
+        .duration(400)
+        .call(zoomer.scaleBy, 1 / 1.5),
+    [zoomer, svg],
+  )
   const onZoomInitial = useCallback(
-    () => svg.call(zoomer.transform, zoomIdentity.translate(width >> 1, height >> 1).scale(minExtentSize)),
+    () =>
+      svg
+        .transition()
+        .duration(400)
+        .call(zoomer.transform, zoomIdentity.translate(width >> 1, height >> 1).scale(minExtentSize)),
     [zoomer, svg, width, height, minExtentSize],
   )
 

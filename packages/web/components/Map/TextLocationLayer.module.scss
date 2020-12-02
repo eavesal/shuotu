@@ -1,4 +1,17 @@
 .text {
   fill: #fff;
   text-shadow: 6px 6px 10px black;
+  font-family: cursive;
+}
+
+.s {
+  font-size: var(--font-size-text-s);
+}
+
+.m {
+  font-size: var(--font-size-text-l);
+}
+
+.l {
+  font-size: var(--font-size-text-xxl);
 }

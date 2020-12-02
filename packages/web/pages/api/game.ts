@@ -1,8 +1,15 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { find } from 'ramda'
+import { Point } from '../../components/Map/types'
 import { Game } from '../../types'
 import { Games, OSS } from '../../types/enums'
 import { getAssets, getTile } from './util'
+
+const StaticHead = {
+  id: '0',
+  label: 'root',
+  pos: [0, 0] as Point,
+}
 
 export function getAll(): Game[] {
   return [
@@ -50,7 +57,7 @@ export function getAll(): Game[] {
             size: 256,
             prefix: getTile(Games.Pubg, 'camp_jackal', 'v1'),
           },
-          locations: [],
+          locations: [StaticHead],
         },
         {
           id: 'erangel',
@@ -62,7 +69,7 @@ export function getAll(): Game[] {
             size: 256,
             prefix: getTile(Games.Pubg, 'camp_jackal', 'v1'),
           },
-          locations: [],
+          locations: [StaticHead],
         },
         {
           id: 'karakin',
@@ -74,7 +81,7 @@ export function getAll(): Game[] {
             size: 256,
             prefix: getTile(Games.Pubg, 'camp_jackal', 'v1'),
           },
-          locations: [],
+          locations: [StaticHead],
         },
         {
           id: 'miramar',
@@ -86,7 +93,7 @@ export function getAll(): Game[] {
             size: 256,
             prefix: getTile(Games.Pubg, 'camp_jackal', 'v1'),
           },
-          locations: [],
+          locations: [StaticHead],
         },
         {
           id: 'paramo',
@@ -98,7 +105,7 @@ export function getAll(): Game[] {
             size: 256,
             prefix: getTile(Games.Pubg, 'camp_jackal', 'v1'),
           },
-          locations: [],
+          locations: [StaticHead],
         },
         {
           id: 'sanhok',
@@ -110,7 +117,7 @@ export function getAll(): Game[] {
             size: 256,
             prefix: getTile(Games.Pubg, 'camp_jackal', 'v1'),
           },
-          locations: [],
+          locations: [StaticHead],
         },
         {
           id: 'vikendi',
@@ -122,7 +129,7 @@ export function getAll(): Game[] {
             size: 256,
             prefix: getTile(Games.Pubg, 'camp_jackal', 'v1'),
           },
-          locations: [],
+          locations: [StaticHead],
         },
       ],
     },

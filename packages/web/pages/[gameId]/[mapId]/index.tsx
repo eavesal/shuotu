@@ -80,7 +80,7 @@ export default function MapSets({ map }: InferGetStaticPropsType<typeof getStati
         ...locations,
         {
           id,
-          label: '新地名',
+          label: '未命名的地点',
           pos: p,
           parentId: '0',
         },
@@ -142,6 +142,7 @@ export default function MapSets({ map }: InferGetStaticPropsType<typeof getStati
             location={find(x => x.id === activeLocation, locations)}
             locations={locations}
             onChange={handleModify}
+            onConfirm={() => setActiveLocation(undefined)}
           />
         )}
       </Sidebar>

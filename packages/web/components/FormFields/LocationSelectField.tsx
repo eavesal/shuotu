@@ -1,21 +1,12 @@
 import React, { useMemo } from 'react'
 import { UseFormMethods, Controller } from 'react-hook-form'
 import { stratify, HierarchyNode } from 'd3-hierarchy'
-import { prepend } from 'ramda'
 
 import { MapLocation } from '../../types'
-import { Point } from '../Map/types'
 import Field from './Field'
 
 import styles from './LocationSelectField.module.scss'
 import { LOCATION_MAX_DEPTH } from '../../constants'
-
-const StaticHead = {
-  id: '0',
-  label: 'root',
-  parentId: undefined,
-  pos: [0, 0] as Point,
-}
 
 const toTree = stratify<MapLocation>()
 
@@ -24,7 +15,7 @@ function getAncestors(tree: HierarchyNode<MapLocation>, parentId: string) {
   return node
     .ancestors()
     .reverse()
-    .slice(0, LOCATION_MAX_DEPTH - 1)
+    .slice(0, LOCATION_MAX_DEPTH - 2)
 }
 
 interface LocationSelectFieldProps {
@@ -38,14 +29,8 @@ interface LocationSelectFieldProps {
 export default function LocationSelectField({ options, control, name, label, activeId }: LocationSelectFieldProps) {
   // change hierarchy when relationship changed
   const relationship = useMemo(() => options.map(x => `${x.id}${x.parentId}`).join(), [options])
-  const tree = useMemo(() => {
-    const data = prepend(
-      StaticHead,
-      options.filter(x => x.id !== activeId),
-    )
-    return toTree(data)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [relationship])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const tree = useMemo(() => toTree(options.filter(x => x.id !== activeId)), [relationship])
 
   return (
     <Field label={label}>

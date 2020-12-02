@@ -1,7 +1,8 @@
 .selects {
   display: flex;
+  justify-content: space-between;
 
   & > select {
-    margin-right: var(--size-sm);
+    width: 49%;
   }
 }

@@ -8,6 +8,7 @@ export interface MapContextType {
 
 export const MapContext = React.createContext<MapContextType>({
   mapPixelSize: [0, 0],
+  // x,y,width,height
   mapBoundingBox: [0, 0, 0, 0],
 })
 

@@ -22,9 +22,10 @@ interface UpdateLocationFormProps {
   location: MapLocation
   locations: MapLocation[]
   onChange?(id: string, data: Partial<MapLocation>): void
+  onConfirm?(): void
 }
 
-export default function UpdateLocationForm({ location, locations, onChange }: UpdateLocationFormProps) {
+export default function UpdateLocationForm({ location, locations, onChange, onConfirm }: UpdateLocationFormProps) {
   const { id } = location
   const defaultValues = useMemo(
     () => ({
@@ -63,8 +64,9 @@ export default function UpdateLocationForm({ location, locations, onChange }: Up
           pos: data.pos.map(x => x.value) as Point,
           parentId: data.parentId,
         })
+      onConfirm && onConfirm()
     },
-    [id, onChange],
+    [id, onChange, onConfirm],
   )
 
   return (
