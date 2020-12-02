@@ -7,7 +7,6 @@ import { includes } from 'ramda'
 
 interface MultiCheckBoxFieldProps {
   name: string
-  label?: string
   options: Option[]
   control: UseFormMethods['control']
   colors?: { [name: string]: string }

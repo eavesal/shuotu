@@ -1,0 +1,7 @@
+.selects {
+  display: flex;
+
+  & > select {
+    margin-right: var(--size-sm);
+  }
+}

@@ -31,7 +31,7 @@ export default function InputField({
   warningMsg,
 }: InputFieldProps) {
   return (
-    <Field label={label} error={error} fieldError={fieldError}>
+    <Field label={label} error={error}>
       <input
         type={type}
         name={name}

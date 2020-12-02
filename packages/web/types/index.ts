@@ -1,10 +1,10 @@
 import { Games } from './enums'
 
 export type MapLocation = {
-  id: number
+  id: string
   label: string
-  // 可能取值1,2,3,5
-  sig: number
+  // 根结点无parentId
+  parentId?: string
   pos: [number, number]
 }
 

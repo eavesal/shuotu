@@ -1,0 +1,23 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
+
+interface PortalProps {
+  id: string
+}
+
+export class Portal extends React.Component<PortalProps> {
+  element: HTMLElement
+
+  componentDidMount() {
+    this.element = document.querySelector('#' + this.props.id)
+    console.log('e', this.element)
+  }
+
+  render() {
+    if (this.element === undefined) {
+      return null
+    }
+
+    return ReactDOM.createPortal(this.props.children, this.element)
+  }
+}
