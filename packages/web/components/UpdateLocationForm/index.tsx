@@ -23,9 +23,10 @@ interface UpdateLocationFormProps {
   locations: MapLocation[]
   onChange?(id: string, data: Partial<MapLocation>): void
   onConfirm?(): void
+  onDelete?(id: string): void
 }
 
-export default function UpdateLocationForm({ location, locations, onChange, onConfirm }: UpdateLocationFormProps) {
+export default function UpdateLocationForm({ location, locations, onChange, onConfirm, onDelete }: UpdateLocationFormProps) {
   const { id } = location
   const defaultValues = useMemo(
     () => ({
@@ -83,9 +84,14 @@ export default function UpdateLocationForm({ location, locations, onChange, onCo
         required
       />
       <LocationSelectField name="parentId" label="所属区域" activeId={id} options={locations} control={control} />
-      <Button style={{ width: '100%' }} size={ButtonSize.S} apperance={ButtonApperance.PRIMARY} type="submit">
-        确认
-      </Button>
+      <div className={styles.btns}>
+        <Button size={ButtonSize.S} apperance={ButtonApperance.TERTIARY} type="reset" onClick={() => onDelete(id)}>
+          删除
+        </Button>
+        <Button size={ButtonSize.S} apperance={ButtonApperance.PRIMARY} type="submit">
+          确认
+        </Button>
+      </div>
     </form>
   )
 }

@@ -30,7 +30,7 @@ export default function LocationSelectField({ options, control, name, label, act
   // change hierarchy when relationship changed
   const relationship = useMemo(() => options.map(x => `${x.id}${x.parentId}`).join(), [options])
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const tree = useMemo(() => toTree(options.filter(x => x.id !== activeId)), [relationship])
+  const tree = useMemo(() => toTree(options), [relationship])
 
   return (
     <Field label={label}>
@@ -46,11 +46,13 @@ export default function LocationSelectField({ options, control, name, label, act
                     -
                   </option>
                   {node.children &&
-                    node.children.map(x => (
-                      <option value={x.id} key={x.id}>
-                        {x.data.label}
-                      </option>
-                    ))}
+                    node.children.map(x =>
+                      activeId === x.id ? null : (
+                        <option value={x.id} key={x.id}>
+                          {x.data.label}
+                        </option>
+                      ),
+                    )}
                 </select>
               ))}
             </>

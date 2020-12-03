@@ -10,7 +10,6 @@ export class Portal extends React.Component<PortalProps> {
 
   componentDidMount() {
     this.element = document.querySelector('#' + this.props.id)
-    console.log('e', this.element)
   }
 
   render() {

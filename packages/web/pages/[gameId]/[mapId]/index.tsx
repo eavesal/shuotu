@@ -62,7 +62,7 @@ export default function MapSets({ map }: InferGetStaticPropsType<typeof getStati
   const [mode, setMode] = useState<CaptureModes | undefined>(undefined)
   const ee = useInstance<EventEmitter>(() => new EventEmitter())
   const [locations, setLocations] = useState(map.locations)
-  const [activeLocation, setActiveLocation] = useState(undefined)
+  const [activeLocationId, setActiveLocation] = useState(undefined)
   const getLocationId = useMemo(
     () =>
       (function* () {
@@ -90,7 +90,7 @@ export default function MapSets({ map }: InferGetStaticPropsType<typeof getStati
     },
     [getLocationId, locations],
   )
-  console.log('locations', locations)
+
   const handleModify = useCallback(
     (id: string, data: Partial<MapLocation>) => {
       const i = findIndex(x => x.id === id, locations)
@@ -105,26 +105,44 @@ export default function MapSets({ map }: InferGetStaticPropsType<typeof getStati
     [locations],
   )
 
+  const handleDelete = useCallback(
+    (id: string) => {
+      setActiveLocation(undefined)
+      setLocations(locations.filter(x => x.id !== id))
+    },
+    [locations],
+  )
+
+  const handleClickLocation = useCallback((id: string) => {
+    setActiveLocation(id)
+  }, [])
+
   return (
     <div className={styles.main}>
       <MapEventEmitter.Provider value={ee}>
         <StaticMap tilePrefix={map.tile.prefix} mapPixelSize={map.mapPixelSize} mapBoundingBox={map.mapBoundingBox}>
           {mode === CaptureModes.TEXT && <ClickCapture mode={mode} onClick={handleAddLocation} />}
-          <TextLocationLayer locations={locations} />
+          <TextLocationLayer
+            locations={locations}
+            activeLocationId={activeLocationId}
+            onClick={process.env.NEXT_PUBLIC_ENABLE_MOD_TEXT_LOCATION === 'true' ? handleClickLocation : undefined}
+          />
         </StaticMap>
       </MapEventEmitter.Provider>
       <motion.div
         className={styles.ops}
-        animate={activeLocation !== undefined ? 'sidebar' : 'normal'}
+        animate={activeLocationId !== undefined ? 'sidebar' : 'normal'}
         variants={OpsBarVariants}
         transition={{ duration: 0.4 }}
       >
-        <span
-          className={mode === CaptureModes.TEXT ? styles.active : undefined}
-          onClick={() => (mode === undefined ? setMode(CaptureModes.TEXT) : setMode(undefined))}
-        >
-          A
-        </span>
+        {process.env.NEXT_PUBLIC_ENABLE_MOD_TEXT_LOCATION === 'true' && (
+          <span
+            className={mode === CaptureModes.TEXT ? styles.active : undefined}
+            onClick={() => (mode === undefined ? setMode(CaptureModes.TEXT) : setMode(undefined))}
+          >
+            A
+          </span>
+        )}
         <span className="iconfont" onClick={() => ee.emit(MapEvents.ZOOM_IN)}>
           &#xe664;
         </span>
@@ -135,14 +153,15 @@ export default function MapSets({ map }: InferGetStaticPropsType<typeof getStati
           &#xe709;
         </span>
       </motion.div>
-      <Sidebar title="新增地名" visiable={activeLocation !== undefined}>
-        {activeLocation !== undefined && (
+      <Sidebar title="新增地名" visiable={activeLocationId !== undefined}>
+        {activeLocationId !== undefined && (
           <UpdateLocationForm
-            key={activeLocation}
-            location={find(x => x.id === activeLocation, locations)}
+            key={activeLocationId}
+            location={find(x => x.id === activeLocationId, locations)}
             locations={locations}
             onChange={handleModify}
             onConfirm={() => setActiveLocation(undefined)}
+            onDelete={handleDelete}
           />
         )}
       </Sidebar>

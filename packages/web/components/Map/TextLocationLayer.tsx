@@ -47,9 +47,11 @@ function getNodesByDepth<T>(root: HierarchyNode<T>, depth: number) {
 
 interface TextLocationLayerProps {
   locations: MapLocation[]
+  activeLocationId?: string
+  onClick?(id: string): void
 }
 
-export default function TextLocationLayer({ locations }: TextLocationLayerProps) {
+export default function TextLocationLayer({ locations, activeLocationId, onClick }: TextLocationLayerProps) {
   const root = useMemo(() => toTree(locations), [locations])
   const depthArray = DepthArray.slice(0, root.height)
   const { mapPixelSize } = useContext(MapContext)
@@ -79,7 +81,13 @@ export default function TextLocationLayer({ locations }: TextLocationLayerProps)
           key={x.id}
           x={points[i][0]}
           y={points[i][1]}
-          className={cx(styles.text, DepthToClassName[depth])}
+          className={cx(
+            styles.text,
+            DepthToClassName[depth],
+            onClick ? styles.clickable : undefined,
+            activeLocationId === x.id ? styles.active : undefined,
+          )}
+          onClick={() => onClick && onClick(x.id)}
           textAnchor="middle"
           dominantBaseline="middle"
         >
