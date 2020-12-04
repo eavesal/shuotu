@@ -38,25 +38,34 @@ export default function LocationSelectField({ options, control, name, label, act
         <Controller
           control={control}
           name={name}
-          render={({ onBlur, onChange, value = '0' }) => (
-            <>
-              {getAncestors(tree, value).map(node => (
-                <select key={node.id} name={name} onChange={onChange} onBlur={onBlur}>
-                  <option value={node.id} key={node.id}>
-                    -
-                  </option>
-                  {node.children &&
-                    node.children.map(x =>
-                      activeId === x.id ? null : (
-                        <option value={x.id} key={x.id}>
-                          {x.data.label}
-                        </option>
-                      ),
-                    )}
-                </select>
-              ))}
-            </>
-          )}
+          render={({ onBlur, onChange, value = '0' }) => {
+            const nodes = getAncestors(tree, value)
+            return (
+              <>
+                {nodes.map((node, i) => (
+                  <select
+                    key={node.id}
+                    name={name}
+                    value={nodes[i + 1] ? nodes[i + 1].id : undefined}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                  >
+                    <option value={node.id} key={node.id}>
+                      -
+                    </option>
+                    {node.children &&
+                      node.children.map(x =>
+                        activeId === x.id ? null : (
+                          <option value={x.id} key={x.id}>
+                            {x.data.label}
+                          </option>
+                        ),
+                      )}
+                  </select>
+                ))}
+              </>
+            )
+          }}
         />
       </div>
     </Field>

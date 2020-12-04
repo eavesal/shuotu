@@ -49,7 +49,8 @@ export default function UpdateLocationForm({ location, locations, onChange, onCo
   })
 
   useEffect(() => {
-    onChange &&
+    label &&
+      onChange &&
       onChange(id, {
         label,
         pos: pos.map(x => parseFloat(x.value)) as Point,
@@ -59,15 +60,19 @@ export default function UpdateLocationForm({ location, locations, onChange, onCo
 
   const onSubmit = useCallback(
     async (data: FormValues) => {
-      onChange &&
-        onChange(id, {
-          label: data.label,
-          pos: data.pos.map(x => parseFloat(x.value)) as Point,
-          parentId: data.parentId,
-        })
-      onConfirm && onConfirm()
+      if (data.label) {
+        onChange &&
+          onChange(id, {
+            label: data.label,
+            pos: data.pos.map(x => parseFloat(x.value)) as Point,
+            parentId: data.parentId,
+          })
+        onConfirm && onConfirm()
+      } else {
+        onDelete && onDelete(id)
+      }
     },
-    [id, onChange, onConfirm],
+    [id, onChange, onConfirm, onDelete],
   )
 
   return (
