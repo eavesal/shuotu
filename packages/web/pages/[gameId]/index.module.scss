@@ -7,17 +7,18 @@
 
   .bg {
     height: var(--size-ls);
-    background-position: center;
+    background-position: top;
     background-repeat: no-repeat;
     background-size: cover;
   }
 
   h1 {
     margin-top: var(--size-mm);
-    font-weight: lighter;
+    font-weight: bolder;
     text-align: center;
     color: var(--text-color-primary);
     text-shadow: 0px 0 10px rgba(0, 0, 0, 1);
+    font-family: Arial, Helvetica, sans-serif;
   }
 
   .content {
@@ -74,5 +75,17 @@
     background-image: linear-gradient(0deg, rgba(12, 12, 12, 1), rgba(12, 12, 12, 0.9));
     box-shadow: 0 0 20px 0 rgba(12, 12, 12, 0.9);
     text-align: center;
+  }
+}
+
+@media (--screen-tablet) {
+  .maps li {
+    flex: 0 0 33.33%;
+  }
+}
+
+@media (--screen-phone) {
+  .maps li {
+    flex: 0 0 100%;
   }
 }

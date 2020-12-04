@@ -73,3 +73,15 @@
     text-align: center;
   }
 }
+
+@media (--screen-tablet) {
+  .games li {
+    flex: 0 0 33.33%;
+  }
+}
+
+@media (--screen-phone) {
+  .games li {
+    flex: 0 0 50%;
+  }
+}

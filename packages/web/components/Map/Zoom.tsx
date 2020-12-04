@@ -3,7 +3,7 @@ import { zoom, zoomIdentity } from 'd3-zoom'
 import { Point, SvgSelection, Transform } from './types'
 import { max, min } from 'ramda'
 import { SvgContext } from '../Svg/Svg'
-import { MapEventEmitter } from './context'
+import { MapContext, MapEventEmitter } from './context'
 import { MapEvents } from './enum'
 
 const DEFAULT_TRANSFORM = {
@@ -34,6 +34,8 @@ function cleanEvent(svg: SvgSelection) {
 // 绑定SVG事件，并返回Transform
 export function useZoom(svg: SvgSelection, scaleExtent: Point, transform?: Transform, disabled = false) {
   const { width, height } = useContext(SvgContext)
+  const { mapBoundingBox } = useContext(MapContext)
+  const [dx, dy, mapWidth, mapHeight] = mapBoundingBox
   const [minExtentSize, maxExtentSize] = scaleExtent
   const [T, setT] = useState(DEFAULT_TRANSFORM)
   const ee = useContext(MapEventEmitter)
@@ -87,7 +89,27 @@ export function useZoom(svg: SvgSelection, scaleExtent: Point, transform?: Trans
         .transition()
         .duration(400)
         .call(zoomer.transform, zoomIdentity.translate(width >> 1, height >> 1).scale(minExtentSize)),
-    [zoomer, svg, width, height, minExtentSize],
+    [height, minExtentSize, svg, width, zoomer.transform],
+  )
+
+  const onZoomTransform = useCallback(
+    (k: number, x: number, y: number) => {
+      if (!svg || !zoomer) {
+        return
+      }
+
+      svg
+        .transition()
+        .duration(400)
+        .call(
+          zoomer.transform,
+          zoomIdentity
+            .translate(width >> 1, height >> 1)
+            .translate((0.5 - (x - dx) / mapWidth) * k, (0.5 - (y - dy) / mapHeight) * k)
+            .scale(k),
+        )
+    },
+    [svg, zoomer, width, height, dx, mapWidth, dy, mapHeight],
   )
 
   useEffect(() => {
@@ -98,13 +120,15 @@ export function useZoom(svg: SvgSelection, scaleExtent: Point, transform?: Trans
     ee.on(MapEvents.ZOOM_IN, onZoomIn)
     ee.on(MapEvents.ZOOM_OUT, onZoomOut)
     ee.on(MapEvents.ZOOM_INITIAL, onZoomInitial)
+    ee.on(MapEvents.ZOOM_TRANSFORM, onZoomTransform)
 
     return () => {
       ee.off(MapEvents.ZOOM_IN, onZoomIn)
       ee.off(MapEvents.ZOOM_OUT, onZoomOut)
       ee.off(MapEvents.ZOOM_INITIAL, onZoomInitial)
+      ee.off(MapEvents.ZOOM_TRANSFORM, onZoomTransform)
     }
-  }, [zoomer, ee, onZoomIn, onZoomOut, onZoomInitial])
+  }, [zoomer, ee, onZoomIn, onZoomOut, onZoomInitial, onZoomTransform])
 
   return T
 }
@@ -135,5 +159,6 @@ export default function Zoom({ svg, minScaleExtent, maxScaleExtent, transform, c
     height,
   ])
   const T = useZoom(svg, scaleExtent, transform)
+  // console.log('T', T)
   return <ZoomContext.Provider value={T}>{children}</ZoomContext.Provider>
 }

@@ -44,8 +44,8 @@ export function getAll(): Game[] {
     {
       id: Games.Pubg,
       name: '绝地求生',
-      cover: getAssets(Games.GenshinImpact, 'cover.jpg', OSS.QINGYUN),
-      logo: getAssets(Games.GenshinImpact, 'logo.png', OSS.QINGYUN),
+      cover: getAssets(Games.Pubg, 'cover.png'),
+      logo: getAssets(Games.Pubg, 'logo.png'),
       maps: [
         {
           id: 'camp_jackal',
@@ -57,7 +57,7 @@ export function getAll(): Game[] {
             size: 256,
             prefix: getTile(Games.Pubg, 'camp_jackal', 'v1'),
           },
-          locations: [StaticHead],
+          locations: require('./pubg/locations/camp_jackal.json'),
         },
         {
           id: 'erangel',
@@ -67,9 +67,9 @@ export function getAll(): Game[] {
           mapPixelSize: [8192, 8192],
           tile: {
             size: 256,
-            prefix: getTile(Games.Pubg, 'camp_jackal', 'v1'),
+            prefix: getTile(Games.Pubg, 'erangel', 'v1'),
           },
-          locations: [StaticHead],
+          locations: require('./pubg/locations/erangel.json'),
         },
         {
           id: 'karakin',
@@ -79,7 +79,7 @@ export function getAll(): Game[] {
           mapPixelSize: [8192, 8192],
           tile: {
             size: 256,
-            prefix: getTile(Games.Pubg, 'camp_jackal', 'v1'),
+            prefix: getTile(Games.Pubg, 'karakin', 'v1'),
           },
           locations: [StaticHead],
         },

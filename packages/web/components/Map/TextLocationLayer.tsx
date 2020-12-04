@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react'
+import React, { useContext, useEffect, useMemo } from 'react'
 import { stratify, HierarchyNode } from 'd3-hierarchy'
 import { last, max } from 'ramda'
 import cx from 'classnames'
@@ -49,11 +49,12 @@ interface TextLocationLayerProps {
   locations: MapLocation[]
   activeLocationId?: string
   onClick?(id: string): void
+  onActiveIdHide?(id: string, transform: { x: number; y: number; k: number })
 }
 
-export default function TextLocationLayer({ locations, activeLocationId, onClick }: TextLocationLayerProps) {
+export default function TextLocationLayer({ locations, activeLocationId, onClick, onActiveIdHide }: TextLocationLayerProps) {
   const root = useMemo(() => toTree(locations), [locations])
-  const depthArray = DepthArray.slice(0, root.height)
+  const depthArray = useMemo(() => DepthArray.slice(0, root.height), [root.height])
   const { mapPixelSize } = useContext(MapContext)
   const [width, height] = mapPixelSize
 
@@ -69,6 +70,19 @@ export default function TextLocationLayer({ locations, activeLocationId, onClick
 
   const worldPoints = useMemo(() => nodes.map(x => x.data.pos), [nodes])
   const points = useApplyPoints(...worldPoints)
+
+  // make zoom transform when active location not in the view (through k)
+  useEffect(() => {
+    if (!activeLocationId) {
+      return
+    }
+
+    const activeNode = root.find(x => x.id === activeLocationId)
+    if (!nodes.includes(activeNode)) {
+      const k = (scaleArray[activeNode.depth] + scaleArray[activeNode.depth - 1]) / 2
+      onActiveIdHide(activeNode.id, { k, x: activeNode.data.pos[0], y: activeNode.data.pos[1] })
+    }
+  }, [activeLocationId, nodes, onActiveIdHide, root, scaleArray])
 
   if (depth === 0) {
     return null

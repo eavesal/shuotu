@@ -17,6 +17,7 @@ import styles from './index.module.scss'
 import { Point } from '../../../components/Map/types'
 import Sidebar from '../../../components/Sidebar'
 import UpdateLocationForm from '../../../components/UpdateLocationForm'
+import { downloadJSON } from '../../../utils'
 
 export const getStaticPaths = async () => {
   const games: Game[] = getAll()
@@ -58,6 +59,30 @@ const OpsBarVariants = {
   },
 }
 
+const isExportBarEnabled = process.env.NEXT_PUBLIC_ENABLE_MOD_TEXT_LOCATION === 'true'
+
+function removeRecursively(id: string, locations: MapLocation[]) {
+  const parentIds = new Set(id)
+  let results = locations.filter(x => x.id !== id)
+
+  while (parentIds.size > 0) {
+    const prevLength = results.length
+    results = results.filter(x => {
+      const shouldBeDeleted = parentIds.has(x.parentId)
+      if (shouldBeDeleted) {
+        parentIds.add(x.id)
+      }
+      return !shouldBeDeleted
+    })
+
+    if (prevLength === results.length) {
+      break
+    }
+  }
+  console.log('remove:', id, locations, results)
+  return results
+}
+
 export default function MapSets({ map }: InferGetStaticPropsType<typeof getStaticProps>) {
   const [mode, setMode] = useState<CaptureModes | undefined>(undefined)
   const ee = useInstance<EventEmitter>(() => new EventEmitter())
@@ -66,9 +91,9 @@ export default function MapSets({ map }: InferGetStaticPropsType<typeof getStati
   const getLocationId = useMemo(
     () =>
       (function* () {
-        let maxId = map.locations.reduce((prev, x) => max(prev, parseInt(x.id)), 1) || 1
+        let maxId = map.locations.reduce((prev, x) => max(prev, parseInt(x.id)), 0) || 0
         while (true) {
-          yield maxId++
+          yield ++maxId
         }
       })(),
     [map.locations],
@@ -108,7 +133,7 @@ export default function MapSets({ map }: InferGetStaticPropsType<typeof getStati
   const handleDelete = useCallback(
     (id: string) => {
       setActiveLocation(undefined)
-      setLocations(locations.filter(x => x.id !== id))
+      setLocations(removeRecursively(id, locations))
     },
     [locations],
   )
@@ -126,9 +151,27 @@ export default function MapSets({ map }: InferGetStaticPropsType<typeof getStati
             locations={locations}
             activeLocationId={activeLocationId}
             onClick={process.env.NEXT_PUBLIC_ENABLE_MOD_TEXT_LOCATION === 'true' ? handleClickLocation : undefined}
+            onActiveIdHide={(id, t) => ee.emit(MapEvents.ZOOM_TRANSFORM, t.k, t.x, t.y)}
           />
         </StaticMap>
       </MapEventEmitter.Provider>
+      {isExportBarEnabled && (
+        <motion.div
+          className={styles.export}
+          animate={activeLocationId !== undefined ? 'sidebar' : 'normal'}
+          variants={OpsBarVariants}
+          transition={{ duration: 0.4 }}
+        >
+          {process.env.NEXT_PUBLIC_ENABLE_MOD_TEXT_LOCATION === 'true' && (
+            <span
+              className={mode === CaptureModes.TEXT ? styles.active : undefined}
+              onClick={() => downloadJSON(locations, map.id)}
+            >
+              A
+            </span>
+          )}
+        </motion.div>
+      )}
       <motion.div
         className={styles.ops}
         animate={activeLocationId !== undefined ? 'sidebar' : 'normal'}

@@ -36,3 +36,34 @@
     cursor: pointer;
   }
 }
+
+.export {
+  position: absolute;
+  right: var(--size-ss);
+  top: var(--size-ss);
+
+  display: flex;
+  background-color: var(--background-dark-popup);
+  border-radius: 2px;
+  overflow: hidden;
+  font-weight: lighter;
+
+  & > span {
+    display: inline-block;
+    width: var(--size-ms);
+    height: var(--size-ms);
+    line-height: var(--size-ms);
+    font-size: var(--font-size-text-xl);
+    text-align: center;
+  }
+
+  & > span:not(:last-child) {
+    border-right: 1px solid var(--border-color-primary);
+  }
+
+  & > span:hover {
+    background-color: var(--background-button-origin);
+    color: #fff;
+    cursor: pointer;
+  }
+}

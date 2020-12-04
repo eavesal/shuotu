@@ -15,7 +15,7 @@ export function useTile(tileSize: number) {
           [width, height],
         ])
         .tileSize(tileSize),
-    [height, tileSize, width],
+    [width, height, tileSize],
   )
 }
 

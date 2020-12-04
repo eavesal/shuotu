@@ -12,7 +12,7 @@ import LocationSelectField from '../FormFields/LocationSelectField'
 
 type FormValues = {
   pos: {
-    value: number
+    value: string
   }[]
   label: string
   parentId: string
@@ -30,7 +30,7 @@ export default function UpdateLocationForm({ location, locations, onChange, onCo
   const { id } = location
   const defaultValues = useMemo(
     () => ({
-      pos: location.pos.map(x => ({ value: x })),
+      pos: location.pos.map(x => ({ value: x.toString() })),
       label: location.label,
       parentId: location.parentId,
     }),
@@ -52,7 +52,7 @@ export default function UpdateLocationForm({ location, locations, onChange, onCo
     onChange &&
       onChange(id, {
         label,
-        pos: pos.map(x => x.value) as Point,
+        pos: pos.map(x => parseFloat(x.value)) as Point,
         parentId,
       })
   }, [id, label, pos, parentId, onChange])
@@ -62,7 +62,7 @@ export default function UpdateLocationForm({ location, locations, onChange, onCo
       onChange &&
         onChange(id, {
           label: data.label,
-          pos: data.pos.map(x => x.value) as Point,
+          pos: data.pos.map(x => parseFloat(x.value)) as Point,
           parentId: data.parentId,
         })
       onConfirm && onConfirm()
