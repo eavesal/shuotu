@@ -38,7 +38,7 @@ function findDepth(scaleArray: number[], k: number) {
 function getNodesByDepth<T>(root: HierarchyNode<T>, depth: number) {
   const nodes: HierarchyNode<T>[] = []
   root.each(x => {
-    if (x.depth === depth) {
+    if (x.depth <= depth && x.depth !== 0) {
       nodes.push(x)
     }
   })

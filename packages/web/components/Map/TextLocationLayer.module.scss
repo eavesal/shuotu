@@ -1,6 +1,6 @@
 .text {
   fill: var(--text-color-primary);
-  text-shadow: 2px 2px 10px black;
+  text-shadow: 2px 2px 8px black;
   font-family: cursive;
 }
 
@@ -13,13 +13,13 @@
 }
 
 .s {
-  font-size: var(--font-size-text-xs);
+  font-size: var(--font-size-text-xxs);
 }
 
 .m {
-  font-size: var(--font-size-text-l);
+  font-size: var(--font-size-text-m);
 }
 
 .l {
-  font-size: var(--font-size-h5);
+  font-size: var(--font-size-text-xxl);
 }

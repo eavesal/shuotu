@@ -7,6 +7,6 @@ export enum Games {
 }
 
 export enum OSS {
-  QINIU = 'http://qkdxzqxhx.hn-bkt.clouddn.com',
+  QINIU = 'http://static.shuotu.fun',
   QINGYUN = 'https://tushuo.sh1a.qingstor.com',
 }

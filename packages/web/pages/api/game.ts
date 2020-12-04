@@ -49,7 +49,7 @@ export function getAll(): Game[] {
       maps: [
         {
           id: 'camp_jackal',
-          name: '营地',
+          name: '新兵训练营',
           cover: getAssets(Games.Pubg, 'map-selection/Camp_Jackal.png'),
           mapBoundingBox: [0, 0, 204000, 204000],
           mapPixelSize: [8192, 8192],
@@ -81,7 +81,7 @@ export function getAll(): Game[] {
             size: 256,
             prefix: getTile(Games.Pubg, 'karakin', 'v1'),
           },
-          locations: [StaticHead],
+          locations: require('./pubg/locations/karakin.json'),
         },
         {
           id: 'miramar',
@@ -91,9 +91,9 @@ export function getAll(): Game[] {
           mapPixelSize: [8192, 8192],
           tile: {
             size: 256,
-            prefix: getTile(Games.Pubg, 'camp_jackal', 'v1'),
+            prefix: getTile(Games.Pubg, 'miramar', 'v1'),
           },
-          locations: [StaticHead],
+          locations: require('./pubg/locations/miramar.json'),
         },
         {
           id: 'paramo',
@@ -103,7 +103,7 @@ export function getAll(): Game[] {
           mapPixelSize: [8192, 8192],
           tile: {
             size: 256,
-            prefix: getTile(Games.Pubg, 'camp_jackal', 'v1'),
+            prefix: getTile(Games.Pubg, 'paramo', 'v1'),
           },
           locations: [StaticHead],
         },
@@ -115,7 +115,7 @@ export function getAll(): Game[] {
           mapPixelSize: [8192, 8192],
           tile: {
             size: 256,
-            prefix: getTile(Games.Pubg, 'camp_jackal', 'v1'),
+            prefix: getTile(Games.Pubg, 'sanhok', 'v1'),
           },
           locations: [StaticHead],
         },
@@ -127,7 +127,7 @@ export function getAll(): Game[] {
           mapPixelSize: [8192, 8192],
           tile: {
             size: 256,
-            prefix: getTile(Games.Pubg, 'camp_jackal', 'v1'),
+            prefix: getTile(Games.Pubg, 'vikendi', 'v1'),
           },
           locations: [StaticHead],
         },
