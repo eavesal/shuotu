@@ -31,7 +31,6 @@ export function getScaleExtent(size: Point, container: Point): Point {
   const maxSize = max(...size)
   const maxBias = getScaleBias(maxSize)
   const minBias = getScaleBias(minSize)
-  console.log('fit size', getFitSize(size, container))
 
   // using this ratio is to make scale corrent when some map that not normalized map (2^N)
   const minExtent = (min(...getFitSize(size, container)) * minBias) / minSize
@@ -45,7 +44,7 @@ export function getScaleCenter(size: Point, container: Point): Point {
   const fitSize = getFitSize(size, container)
   const widthRatio = size[0] / getScaleBias(size[0])
   const heightRatio = size[1] / getScaleBias(size[1])
-  console.log('ratio', widthRatio, heightRatio)
+
   return [
     ((fitSize[0] >> 1) * (1 - widthRatio)) / widthRatio + (container[0] >> 1),
     ((fitSize[1] >> 1) * (1 - heightRatio)) / heightRatio + (container[1] >> 1),

@@ -1,11 +1,11 @@
 .text {
   fill: var(--text-color-primary);
-  text-shadow: 2px 2px 8px black;
+  text-shadow: 0 0 1px black, 0 0 2px black;
   font-family: cursive;
 }
 
 .active {
-  text-shadow: 2px 2px 10px white;
+  text-shadow: 0 0 1px var(--background-button-origin), 0 0 2px var(--background-button-origin);
 }
 
 .clickable {

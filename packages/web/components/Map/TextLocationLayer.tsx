@@ -31,7 +31,7 @@ function findDepth(scaleArray: number[], k: number) {
       return i
     }
   }
-  return 0
+  return last(scaleArray)
 }
 
 // this could be optimized

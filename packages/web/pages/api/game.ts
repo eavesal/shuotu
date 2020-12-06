@@ -1,15 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { find } from 'ramda'
-import { Point } from '../../components/Map/types'
 import { Game } from '../../types'
 import { Games, OSS } from '../../types/enums'
 import { getAssets, getTile } from './util'
 
-const StaticHead = {
-  id: '0',
-  label: 'root',
-  pos: [0, 0] as Point,
-}
+// const StaticHead = {
+//   id: '0',
+//   label: 'root',
+//   pos: [0, 0] as Point,
+// }
 
 export function getAll(): Game[] {
   return [
@@ -20,7 +19,7 @@ export function getAll(): Game[] {
       logo: getAssets(Games.GenshinImpact, 'logo.png', OSS.QINGYUN),
       maps: [
         {
-          id: 'main',
+          id: 'teyvat',
           name: '缇瓦特大陆',
           cover: getAssets(Games.Pubg, 'map-selection/Camp_Jackal.png'),
           mapBoundingBox: [0, 0, 6144, 6144],
@@ -29,7 +28,7 @@ export function getAll(): Game[] {
             size: 256,
             prefix: getTile(Games.GenshinImpact, 'teyvat', 'v2'),
           },
-          locations: [StaticHead],
+          locations: require('./genshin_impact/locations/teyvat.json'),
         },
       ],
     },
@@ -142,7 +141,7 @@ export function getAll(): Game[] {
             size: 256,
             prefix: getTile(Games.Pubg, 'vikendi', 'v1'),
           },
-          locations: [StaticHead],
+          locations: require('./pubg/locations/vikendi.json'),
         },
       ],
     },

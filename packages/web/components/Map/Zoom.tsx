@@ -129,6 +129,5 @@ interface ZoomProps {
 
 export default function Zoom({ svg, transform, children }: ZoomProps) {
   const T = useZoom(svg, transform)
-  console.log('T', T)
   return <ZoomContext.Provider value={T}>{children}</ZoomContext.Provider>
 }
