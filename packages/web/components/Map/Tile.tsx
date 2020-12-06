@@ -3,6 +3,8 @@ import { tile } from 'd3-tile'
 
 import { ZoomContext } from './Zoom'
 import { SvgContext } from '../Svg/Svg'
+import { MapContext } from './context'
+import { tileSizeGetter } from './utils'
 
 export function useTile(tileSize: number) {
   const { width, height } = useContext(SvgContext)
@@ -25,22 +27,32 @@ interface TileProps {
 }
 
 export default function Tile({ tileSize, tilePrefix }: TileProps) {
+  const { mapPixelSize } = useContext(MapContext)
+  const getTileSize = useMemo(() => tileSizeGetter(mapPixelSize), [mapPixelSize])
   const T = useContext(ZoomContext)
   const tiler = useTile(tileSize)
   const tiles = tiler(T)
 
   return (
     <g>
-      {tiles.map(([x, y, z]: [number, number, number]) => (
-        <image
-          key={`${z}-${x}-${y}`}
-          xlinkHref={`${tilePrefix}/${z}-${x}-${y}.png`}
-          x={(x + tiles.translate[0]) * tiles.scale}
-          y={(y + tiles.translate[1]) * tiles.scale}
-          width={tiles.scale}
-          height={tiles.scale}
-        />
-      ))}
+      {tiles.map(([x, y, z]: [number, number, number]) => {
+        const size = getTileSize(z, x, y)
+
+        if (size[0] <= 0 || size[1] <= 0) {
+          return null
+        }
+
+        return (
+          <image
+            key={`${z}-${x}-${y}`}
+            xlinkHref={`${tilePrefix}/${z}-${x}-${y}.png`}
+            x={(x + tiles.translate[0]) * tiles.scale}
+            y={(y + tiles.translate[1]) * tiles.scale}
+            width={(tiles.scale * size[0]) / 256}
+            height={(tiles.scale * size[1]) / 256}
+          />
+        )
+      })}
     </g>
   )
 }

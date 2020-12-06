@@ -97,7 +97,7 @@ export default function TextLocationLayer({ locations, activeLocationId, onClick
           y={points[i][1]}
           className={cx(
             styles.text,
-            DepthToClassName[depth],
+            DepthToClassName[x.depth],
             onClick ? styles.clickable : undefined,
             activeLocationId === x.id ? styles.active : undefined,
           )}

@@ -18,7 +18,20 @@ export function getAll(): Game[] {
       name: '原神',
       cover: getAssets(Games.GenshinImpact, 'cover.jpg', OSS.QINGYUN),
       logo: getAssets(Games.GenshinImpact, 'logo.png', OSS.QINGYUN),
-      maps: [],
+      maps: [
+        {
+          id: 'main',
+          name: '缇瓦特大陆',
+          cover: getAssets(Games.Pubg, 'map-selection/Camp_Jackal.png'),
+          mapBoundingBox: [0, 0, 6144, 6144],
+          mapPixelSize: [6144, 6144],
+          tile: {
+            size: 256,
+            prefix: getTile(Games.GenshinImpact, 'teyvat', 'v2'),
+          },
+          locations: [StaticHead],
+        },
+      ],
     },
     {
       id: Games.ZeldaBow,
@@ -105,7 +118,7 @@ export function getAll(): Game[] {
             size: 256,
             prefix: getTile(Games.Pubg, 'paramo', 'v1'),
           },
-          locations: [StaticHead],
+          locations: require('./pubg/locations/paramo.json'),
         },
         {
           id: 'sanhok',
@@ -117,7 +130,7 @@ export function getAll(): Game[] {
             size: 256,
             prefix: getTile(Games.Pubg, 'sanhok', 'v1'),
           },
-          locations: [StaticHead],
+          locations: require('./pubg/locations/sanhok.json'),
         },
         {
           id: 'vikendi',
