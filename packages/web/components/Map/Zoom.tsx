@@ -1,10 +1,11 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { zoom, zoomIdentity } from 'd3-zoom'
-import { Point, SvgSelection, Transform } from './types'
-import { max, min } from 'ramda'
+
+import { SvgSelection, Transform } from './types'
 import { SvgContext } from '../Svg/Svg'
 import { MapContext, MapEventEmitter } from './context'
 import { MapEvents } from './enum'
+import { getScaleCenter, getScaleExtent } from './utils'
 
 const DEFAULT_TRANSFORM = {
   k: 0,
@@ -13,36 +14,24 @@ const DEFAULT_TRANSFORM = {
 }
 export const ZoomContext = createContext<Transform>(DEFAULT_TRANSFORM)
 
-const getInitialTransform = (size: Point, scaleExtent: Point, transform?: Transform): Transform => {
-  if (transform) {
-    return transform
-  }
-
-  const [width, height] = size
-  return {
-    x: width >> 1,
-    y: height >> 1,
-    k: scaleExtent[0],
-  }
-}
-
 function cleanEvent(svg: SvgSelection) {
   svg && svg.on('.zoom', null)
   svg && svg.on('wheel', null)
 }
 
 // 绑定SVG事件，并返回Transform
-export function useZoom(svg: SvgSelection, scaleExtent: Point, transform?: Transform, disabled = false) {
+export function useZoom(svg: SvgSelection, transform?: Transform, disabled = false) {
   const { width, height } = useContext(SvgContext)
-  const { mapBoundingBox } = useContext(MapContext)
+  const { mapBoundingBox, mapPixelSize } = useContext(MapContext)
   const [dx, dy, mapWidth, mapHeight] = mapBoundingBox
-  const [minExtentSize, maxExtentSize] = scaleExtent
   const [T, setT] = useState(DEFAULT_TRANSFORM)
   const ee = useContext(MapEventEmitter)
+  const scaleExtent = useMemo(() => getScaleExtent(mapPixelSize, [width, height]), [height, mapPixelSize, width])
+  const scaleCenter = useMemo(() => getScaleCenter(mapPixelSize, [width, height]), [height, mapPixelSize, width])
 
   const zoomer = useMemo(() => {
     return zoom<SVGSVGElement, null>()
-      .scaleExtent([minExtentSize, maxExtentSize])
+      .scaleExtent(scaleExtent)
       .extent([
         [0, 0],
         [width, height],
@@ -55,16 +44,15 @@ export function useZoom(svg: SvgSelection, scaleExtent: Point, transform?: Trans
           k: event.transform.k,
         }),
       )
-  }, [width, height, minExtentSize, maxExtentSize])
+  }, [scaleExtent, width, height])
 
   useEffect(() => {
     if (!svg) {
       return
     }
 
-    const initialTransform = getInitialTransform([width, height], scaleExtent, transform)
     svg.call(zoomer)
-    svg.call(zoomer.transform, zoomIdentity.translate(initialTransform.x, initialTransform.y).scale(initialTransform.k))
+    svg.call(zoomer.transform, zoomIdentity.translate(...scaleCenter).scale(scaleExtent[0]))
     svg.on('wheel', e => e.preventDefault())
 
     disabled && cleanEvent(svg)
@@ -72,7 +60,7 @@ export function useZoom(svg: SvgSelection, scaleExtent: Point, transform?: Trans
     return () => {
       cleanEvent(svg)
     }
-  }, [zoomer, svg, width, height, scaleExtent, transform, disabled])
+  }, [zoomer, svg, width, height, transform, disabled, scaleExtent, scaleCenter])
 
   const onZoomIn = useCallback(() => svg.transition().duration(400).call(zoomer.scaleBy, 1.5), [zoomer, svg])
   const onZoomOut = useCallback(
@@ -88,8 +76,8 @@ export function useZoom(svg: SvgSelection, scaleExtent: Point, transform?: Trans
       svg
         .transition()
         .duration(400)
-        .call(zoomer.transform, zoomIdentity.translate(width >> 1, height >> 1).scale(minExtentSize)),
-    [height, minExtentSize, svg, width, zoomer.transform],
+        .call(zoomer.transform, zoomIdentity.translate(...scaleCenter).scale(scaleExtent[0])),
+    [scaleCenter, scaleExtent, svg, zoomer.transform],
   )
 
   const onZoomTransform = useCallback(
@@ -128,37 +116,19 @@ export function useZoom(svg: SvgSelection, scaleExtent: Point, transform?: Trans
       ee.off(MapEvents.ZOOM_INITIAL, onZoomInitial)
       ee.off(MapEvents.ZOOM_TRANSFORM, onZoomTransform)
     }
-  }, [zoomer, ee, onZoomIn, onZoomOut, onZoomInitial, onZoomTransform])
+  }, [zoomer, ee, onZoomIn, onZoomOut, onZoomTransform, onZoomInitial])
 
   return T
 }
 
-function calcDefaultExtentSize(size: Point, minExtentSize?: number, maxExtentSize?: number): Point {
-  const minSize = min(...size)
-  const maxSize = max(...size)
-  return [
-    typeof minExtentSize === 'number' ? minExtentSize : minSize,
-    typeof maxExtentSize === 'number' ? maxExtentSize : maxSize,
-  ]
-}
-
 interface ZoomProps {
   svg: SvgSelection
-  minScaleExtent?: number
-  maxScaleExtent?: number
   transform?: Transform
   children?: React.ReactNode
 }
 
-export default function Zoom({ svg, minScaleExtent, maxScaleExtent, transform, children }: ZoomProps) {
-  const { width, height } = useContext(SvgContext)
-  const scaleExtent = useMemo(() => calcDefaultExtentSize([width, height], minScaleExtent, maxScaleExtent), [
-    maxScaleExtent,
-    minScaleExtent,
-    width,
-    height,
-  ])
-  const T = useZoom(svg, scaleExtent, transform)
-  // console.log('T', T)
+export default function Zoom({ svg, transform, children }: ZoomProps) {
+  const T = useZoom(svg, transform)
+  console.log('T', T)
   return <ZoomContext.Provider value={T}>{children}</ZoomContext.Provider>
 }

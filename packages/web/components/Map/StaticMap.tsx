@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { select } from 'd3-selection'
-import { max } from 'ramda'
 
 import Svg from '../Svg/Svg'
 import { SvgSelection } from './types'
@@ -32,7 +31,6 @@ interface StaticMapProps extends MapContextType {
 
 export default function StaticMap({ mapBoundingBox, mapPixelSize, tileSize = 256, tilePrefix, children }: StaticMapProps) {
   const { svg, ref } = useD3Svg()
-  const maxScaleExtent = useMemo(() => max(...mapPixelSize), [mapPixelSize])
   const mapContextValue = useMemo(
     () => ({
       mapPixelSize,
@@ -44,7 +42,7 @@ export default function StaticMap({ mapBoundingBox, mapPixelSize, tileSize = 256
   return (
     <Svg ref={ref}>
       <MapContext.Provider value={mapContextValue}>
-        <Zoom svg={svg} maxScaleExtent={maxScaleExtent}>
+        <Zoom svg={svg}>
           <Tile tileSize={tileSize} tilePrefix={tilePrefix} />
           {children}
         </Zoom>
