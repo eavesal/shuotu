@@ -11,7 +11,7 @@ export default function Footer() {
           <Link href="mailto:lijingyu68@gmail.com">建议与反馈</Link>
         </li>
         <li>
-          <Link href="/join">加入我们</Link>
+          <Link href="/join">关于我们</Link>
         </li>
         <li>
           <Link href="https://github.com/eavesal/shuotu">查阅源码（Github）</Link>
