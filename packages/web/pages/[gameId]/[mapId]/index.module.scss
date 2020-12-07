@@ -62,8 +62,8 @@
   }
 
   & > span:hover {
+    cursor: pointer;
     background-color: var(--background-button-origin);
     color: #fff;
-    cursor: pointer;
   }
 }

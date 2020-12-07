@@ -7,6 +7,7 @@ import { getAll, getGameById } from '../api/game'
 
 import styles from './index.module.scss'
 import Link from 'next/link'
+import Footer from '../../components/Footer'
 
 export const getStaticPaths = async () => {
   const games: Game[] = getAll()
@@ -36,10 +37,10 @@ export default function MapSets({ data }: InferGetStaticPropsType<typeof getStat
     <div className={styles.main}>
       <div className={styles.bg} style={{ backgroundImage: `url(${data.cover})` }}>
         <NavBar />
-        <h1>{data.name} 地图集</h1>
+        <h3>{data.name} 地图集</h3>
       </div>
       <div className={styles.content}>
-        <div className="view">
+        <div className="view" style={{ minHeight: '60vh' }}>
           <ul className={styles.maps}>
             {data.maps.map(x => (
               <Link
@@ -60,6 +61,7 @@ export default function MapSets({ data }: InferGetStaticPropsType<typeof getStat
           </ul>
         </div>
       </div>
+      <Footer />
     </div>
   )
 }

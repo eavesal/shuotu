@@ -5,6 +5,7 @@ import NavBar from '../components/NavBar'
 import { getAll } from './api/game'
 
 import styles from './index.module.scss'
+import Footer from '../components/Footer'
 
 export const getStaticProps = async () => {
   return {
@@ -18,8 +19,8 @@ export default function Home({ games }: InferGetStaticPropsType<typeof getStatic
   return (
     <div className={styles.main}>
       <NavBar />
-      <h1>图说您的游戏旅程</h1>
-      <h6>传奇装备、未知宝藏、会心彩蛋，一切皆可图说</h6>
+      <h1>图说您的游戏</h1>
+      <h6>传奇装备、未知宝藏、会心彩蛋，皆可图说</h6>
       <div className="view">
         <ul className={styles.games}>
           {games.map(x => (
@@ -35,6 +36,7 @@ export default function Home({ games }: InferGetStaticPropsType<typeof getStatic
           ))}
         </ul>
       </div>
+      <Footer />
     </div>
   )
 }

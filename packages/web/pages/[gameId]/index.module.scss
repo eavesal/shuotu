@@ -12,13 +12,15 @@
     background-size: cover;
   }
 
-  h1 {
+  h3 {
     margin-top: var(--size-mm);
     font-weight: bolder;
     text-align: center;
     color: var(--text-color-primary);
-    text-shadow: 0px 0 10px rgba(0, 0, 0, 1);
+    text-shadow: 0 0 2px rgba(0, 0, 0, 1);
     font-family: Arial, Helvetica, sans-serif;
+    white-space: nowrap;
+    overflow: auto;
   }
 
   .content {
