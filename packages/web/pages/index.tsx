@@ -27,7 +27,7 @@ export default function Home({ games }: InferGetStaticPropsType<typeof getStatic
               <li>
                 <div className={styles.wrapper}>
                   <img className={styles.cover} src={x.cover} />
-                  <img className={styles.logo} src={x.logo} />
+                  {x.logo && <img className={styles.logo} src={x.logo} />}
                   <span>{x.name}</span>
                 </div>
               </li>

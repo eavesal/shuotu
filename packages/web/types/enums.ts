@@ -4,6 +4,8 @@ export enum Games {
   GenshinImpact = 'genshin_impact',
   Pubg = 'pubg',
   ZeldaBow = 'zelda_bow',
+  GhostOfTsushima = 'ghost_of_tsushima',
+  HollowKnight = 'hollow_knight',
 }
 
 export enum OSS {

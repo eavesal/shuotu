@@ -1,4 +1,4 @@
-import { max, memoizeWith, min, range } from 'ramda'
+import { max, memoizeWith, range } from 'ramda'
 import { Point } from './types'
 
 const DEPTH_TO_SIZE = range(0, 16).map(x => 2 << (x + 7))
@@ -27,13 +27,11 @@ function getFitSize(size: Point, container: Point): Point {
 
 // based on map size and container size, calc the scale extent size
 export function getScaleExtent(size: Point, container: Point): Point {
-  const minSize = min(...size)
   const maxSize = max(...size)
   const maxBias = getScaleBias(maxSize)
-  const minBias = getScaleBias(minSize)
 
   // using this ratio is to make scale corrent when some map that not normalized map (2^N)
-  const minExtent = (min(...getFitSize(size, container)) * minBias) / minSize
+  const minExtent = (max(...getFitSize(size, container)) * maxBias) / maxSize
   // .49 is basicly to avoid load next depth of image but keep map can zoom bigger
   // 8 is start depth, 2^8=256=tileSize
   const maxExtent = Math.pow(2, 8.49 + DEPTH_TO_SIZE.indexOf(maxBias))
@@ -42,8 +40,9 @@ export function getScaleExtent(size: Point, container: Point): Point {
 
 export function getScaleCenter(size: Point, container: Point): Point {
   const fitSize = getFitSize(size, container)
-  const widthRatio = size[0] / getScaleBias(size[0])
-  const heightRatio = size[1] / getScaleBias(size[1])
+  const scaleBias = getScaleBias(max(...size))
+  const widthRatio = size[0] / scaleBias
+  const heightRatio = size[1] / scaleBias
 
   return [
     ((fitSize[0] >> 1) * (1 - widthRatio)) / widthRatio + (container[0] >> 1),

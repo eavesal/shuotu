@@ -58,8 +58,7 @@ export function getAll(): Game[] {
     {
       id: Games.ZeldaBow,
       name: '塞尔达 旷野之息',
-      cover: getAssets(Games.GenshinImpact, 'cover.jpg', OSS.QINGYUN),
-      logo: getAssets(Games.GenshinImpact, 'logo.png', OSS.QINGYUN),
+      cover: 'https://www.vgtime.com/s/uga/2017/vgtime/static/bg_3.jpg',
       maps: [
         {
           id: 'hyrule',
@@ -78,13 +77,63 @@ export function getAll(): Game[] {
     {
       id: Games.AssassinCreditValhalla,
       name: '刺客信条 英灵殿',
-      cover: getAssets(Games.GenshinImpact, 'cover.jpg', OSS.QINGYUN),
-      logo: getAssets(Games.GenshinImpact, 'logo.png', OSS.QINGYUN),
+      cover: 'https://img.3dmgame.com/uploads/images/news/20200501/1588265124_271696.jpg',
       maps: [
+        {
+          id: 'norway',
+          name: '挪威',
+          cover: 'http://n1.itc.cn/img8/wb/recom/2016/06/23/146664890542182548.JPEG',
+          mapBoundingBox: [0, 0, 4096, 4096],
+          mapPixelSize: [4096, 4096],
+          tile: {
+            size: 256,
+            prefix: getTile(Games.AssassinCreditValhalla, 'norway', 'v1'),
+          },
+          locations: [StaticHead],
+          transform: {
+            k: 1200,
+            x: 2048,
+            y: 2048,
+          },
+        },
+        {
+          id: 'england',
+          name: '英格兰',
+          cover: 'http://p9.itc.cn/images01/20201113/164b3dcb2a714f30bee868a469ea75bb.png',
+          mapBoundingBox: [0, 0, 8192, 8192],
+          mapPixelSize: [8192, 8192],
+          tile: {
+            size: 256,
+            prefix: getTile(Games.AssassinCreditValhalla, 'england', 'v1'),
+          },
+          locations: [StaticHead],
+          transform: {
+            k: 1800,
+            x: 4096,
+            y: 4096,
+          },
+        },
+        {
+          id: 'vinland',
+          name: '温兰德',
+          cover: 'http://n1.itc.cn/img8/wb/recom/2016/06/23/146664890542182548.JPEG',
+          mapBoundingBox: [0, 0, 4096, 4096],
+          mapPixelSize: [4096, 4096],
+          tile: {
+            size: 256,
+            prefix: getTile(Games.AssassinCreditValhalla, 'vinland', 'v1'),
+          },
+          locations: [StaticHead],
+          transform: {
+            k: 1800,
+            x: 2048,
+            y: 2048,
+          },
+        },
         {
           id: 'asgard',
           name: '阿斯加德',
-          cover: 'https://uploadstatic.mihoyo.com/contentweb/20200319/2020031921552395638.jpg',
+          cover: 'http://n1.itc.cn/img8/wb/recom/2016/06/23/146664890542182548.JPEG',
           mapBoundingBox: [0, 0, 4096, 4096],
           mapPixelSize: [4096, 4096],
           tile: {
@@ -97,6 +146,61 @@ export function getAll(): Game[] {
             x: 2048,
             y: 2048,
           },
+        },
+        {
+          id: 'jotunheim',
+          name: '约顿海姆',
+          cover: 'http://n1.itc.cn/img8/wb/recom/2016/06/23/146664890542182548.JPEG',
+          mapBoundingBox: [0, 0, 4096, 4096],
+          mapPixelSize: [4096, 4096],
+          tile: {
+            size: 256,
+            prefix: getTile(Games.AssassinCreditValhalla, 'jotunheim', 'v1'),
+          },
+          locations: [StaticHead],
+          transform: {
+            k: 1800,
+            x: 2048,
+            y: 2048,
+          },
+        },
+      ],
+    },
+    {
+      id: Games.GhostOfTsushima,
+      name: '对马岛之魂',
+      cover: 'https://cdn.progogame.com/uploads/20201103/00/55/d0760c8ec0.jpg',
+      maps: [
+        {
+          id: 'tsushima',
+          name: '对马岛',
+          cover: 'https://cdn.progogame.com/uploads/20201103/00/55/d0760c8ec0.jpg',
+          mapBoundingBox: [0, 0, 16384, 16384],
+          mapPixelSize: [16384, 16384],
+          tile: {
+            size: 256,
+            prefix: getTile(Games.GhostOfTsushima, 'tsushima', 'v1'),
+          },
+          locations: [StaticHead],
+        },
+      ],
+    },
+    {
+      id: Games.HollowKnight,
+      name: '空洞骑士',
+      cover: 'http://5b0988e595225.cdn.sohucs.com/images/20181113/3d7c7d9566554251aedb125fbc8b8b73.jpeg',
+      maps: [
+        {
+          id: 'hallownest',
+          name: '圣巢',
+          cover: 'https://cdn.progogame.com/uploads/20201103/00/55/d0760c8ec0.jpg',
+          mapBoundingBox: [0, 0, 4498, 2901],
+          mapPixelSize: [4498, 2901],
+          tile: {
+            size: 256,
+            prefix: getTile(Games.HollowKnight, 'hallownest', 'v1'),
+          },
+          locations: [StaticHead],
         },
       ],
     },

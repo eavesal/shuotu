@@ -33,6 +33,6 @@ export type Game = {
   id: Games
   name: string
   cover: string
-  logo: string
+  logo?: string
   maps: MapSet[]
 }
