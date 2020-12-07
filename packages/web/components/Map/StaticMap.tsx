@@ -6,6 +6,7 @@ import { SvgSelection } from './types'
 import Zoom from './Zoom'
 import Tile from './Tile'
 import { MapContext, MapContextType } from './context'
+import { Transform } from '../../types'
 
 // 用户获取d3的svg实例
 function useD3Svg() {
@@ -26,10 +27,18 @@ function useD3Svg() {
 interface StaticMapProps extends MapContextType {
   tilePrefix: string
   tileSize?: number
+  transform?: Transform
   children?: React.ReactNode
 }
 
-export default function StaticMap({ mapBoundingBox, mapPixelSize, tileSize = 256, tilePrefix, children }: StaticMapProps) {
+export default function StaticMap({
+  mapBoundingBox,
+  mapPixelSize,
+  tileSize = 256,
+  transform,
+  tilePrefix,
+  children,
+}: StaticMapProps) {
   const { svg, ref } = useD3Svg()
   const mapContextValue = useMemo(
     () => ({
@@ -42,7 +51,7 @@ export default function StaticMap({ mapBoundingBox, mapPixelSize, tileSize = 256
   return (
     <Svg ref={ref}>
       <MapContext.Provider value={mapContextValue}>
-        <Zoom svg={svg}>
+        <Zoom svg={svg} transform={transform}>
           <Tile tileSize={tileSize} tilePrefix={tilePrefix} />
           {children}
         </Zoom>

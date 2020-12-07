@@ -13,7 +13,7 @@ export class Portal extends React.Component<PortalProps> {
   }
 
   render() {
-    if (this.element === undefined) {
+    if (!this.element) {
       return null
     }
 

@@ -42,7 +42,13 @@ export default function MapSets({ data }: InferGetStaticPropsType<typeof getStat
         <div className="view">
           <ul className={styles.maps}>
             {data.maps.map(x => (
-              <Link href={`/${data.id}/${x.id}`} key={x.id}>
+              <Link
+                href={{
+                  pathname: `/${data.id}/${x.id}`,
+                  query: x.transform,
+                }}
+                key={x.id}
+              >
                 <li>
                   <div className={styles.wrapper}>
                     <img className={styles.cover} src={x.cover} />

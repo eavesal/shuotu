@@ -46,21 +46,39 @@ export function useZoom(svg: SvgSelection, transform?: Transform, disabled = fal
       )
   }, [scaleExtent, width, height])
 
+  // bind events
   useEffect(() => {
-    if (!svg) {
+    if (!svg || !zoomer) {
       return
     }
-
     svg.call(zoomer)
-    svg.call(zoomer.transform, zoomIdentity.translate(...scaleCenter).scale(scaleExtent[0]))
     svg.on('wheel', e => e.preventDefault())
 
     disabled && cleanEvent(svg)
-
     return () => {
       cleanEvent(svg)
     }
-  }, [zoomer, svg, width, height, transform, disabled, scaleExtent, scaleCenter])
+  }, [disabled, svg, zoomer])
+
+  // setup transform
+  useEffect(() => {
+    if (!svg || !zoomer) {
+      return
+    }
+
+    if (transform) {
+      const { x, y, k } = transform
+      svg.call(
+        zoomer.transform,
+        zoomIdentity
+          .translate(width >> 1, height >> 1)
+          .translate((0.5 - (x - dx) / mapWidth) * k, (0.5 - (y - dy) / mapHeight) * k)
+          .scale(k),
+      )
+    } else {
+      svg.call(zoomer.transform, zoomIdentity.translate(...scaleCenter).scale(scaleExtent[0]))
+    }
+  }, [dx, dy, height, mapHeight, mapWidth, scaleCenter, scaleExtent, svg, transform, width, zoomer])
 
   const onZoomIn = useCallback(() => svg.transition().duration(400).call(zoomer.scaleBy, 1.5), [zoomer, svg])
   const onZoomOut = useCallback(

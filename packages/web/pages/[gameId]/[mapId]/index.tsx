@@ -3,6 +3,7 @@ import { EventEmitter } from 'events'
 import { InferGetStaticPropsType } from 'next'
 import { equals, find, findIndex, max, update } from 'ramda'
 import { motion } from 'framer-motion'
+import { useRouter } from 'next/router'
 
 import { MapEventEmitter } from '../../../components/Map/context'
 import { MapEvents } from '../../../components/Map/enum'
@@ -79,11 +80,11 @@ function removeRecursively(id: string, locations: MapLocation[]) {
       break
     }
   }
-  console.log('remove:', id, locations, results)
   return results
 }
 
 export default function MapSets({ map }: InferGetStaticPropsType<typeof getStaticProps>) {
+  const { query } = useRouter()
   const [mode, setMode] = useState<CaptureModes | undefined>(undefined)
   const ee = useInstance<EventEmitter>(() => new EventEmitter())
   const [locations, setLocations] = useState(map.locations)
@@ -98,6 +99,17 @@ export default function MapSets({ map }: InferGetStaticPropsType<typeof getStati
       })(),
     [map.locations],
   )
+  const transform = useMemo(() => {
+    if (query.x && query.y && query.k) {
+      return {
+        x: parseFloat(query.x as string),
+        y: parseFloat(query.y as string),
+        k: parseFloat(query.k as string),
+      }
+    }
+    return undefined
+  }, [query])
+
   const handleAddLocation = useCallback(
     (e: React.MouseEvent, p: Point) => {
       const id = getLocationId.next().value.toString()
@@ -145,7 +157,12 @@ export default function MapSets({ map }: InferGetStaticPropsType<typeof getStati
   return (
     <div className={styles.main}>
       <MapEventEmitter.Provider value={ee}>
-        <StaticMap tilePrefix={map.tile.prefix} mapPixelSize={map.mapPixelSize} mapBoundingBox={map.mapBoundingBox}>
+        <StaticMap
+          tilePrefix={map.tile.prefix}
+          mapPixelSize={map.mapPixelSize}
+          mapBoundingBox={map.mapBoundingBox}
+          transform={transform}
+        >
           {mode === CaptureModes.TEXT && <ClickCapture mode={mode} onClick={handleAddLocation} />}
           <TextLocationLayer
             locations={locations}

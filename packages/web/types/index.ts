@@ -1,5 +1,11 @@
 import { Games } from './enums'
 
+export type Transform = {
+  x: number
+  y: number
+  k: number
+}
+
 export type MapLocation = {
   id: string
   label: string
@@ -20,6 +26,7 @@ export type MapSet = {
     prefix: string
   }
   locations: MapLocation[]
+  transform?: Transform
 }
 
 export type Game = {
