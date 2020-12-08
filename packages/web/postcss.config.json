@@ -12,7 +12,7 @@
         "features": {
           "custom-properties": false
         },
-        "importFrom": "styles/custom-media.css"
+        "importFrom": "src/styles/custom-media.css"
       }
     ]
   ]
