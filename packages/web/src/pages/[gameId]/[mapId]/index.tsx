@@ -4,6 +4,7 @@ import { InferGetStaticPropsType } from 'next'
 import { equals, find, findIndex, max, update } from 'ramda'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/router'
+import { NextSeo } from 'next-seo'
 
 import { MapEventEmitter } from '../../../components/Map/context'
 import { MapEvents } from '../../../components/Map/enum'
@@ -155,26 +156,44 @@ export default function MapSets({ map }: InferGetStaticPropsType<typeof getStati
   }, [])
 
   return (
-    <div className={styles.main}>
-      <MapEventEmitter.Provider value={ee}>
-        <StaticMap
-          tilePrefix={map.tile.prefix}
-          mapPixelSize={map.mapPixelSize}
-          mapBoundingBox={map.mapBoundingBox}
-          transform={transform}
-        >
-          {mode === CaptureModes.TEXT && <ClickCapture mode={mode} onClick={handleAddLocation} />}
-          <TextLocationLayer
-            locations={locations}
-            activeLocationId={activeLocationId}
-            onClick={process.env.NEXT_PUBLIC_ENABLE_MOD_TEXT_LOCATION === 'true' ? handleClickLocation : undefined}
-            onActiveIdHide={(id, t) => ee.emit(MapEvents.ZOOM_TRANSFORM, t.k, t.x, t.y)}
-          />
-        </StaticMap>
-      </MapEventEmitter.Provider>
-      {isExportBarEnabled && (
+    <>
+      <NextSeo title={map.name} />
+      <div className={styles.main}>
+        <MapEventEmitter.Provider value={ee}>
+          <StaticMap
+            tilePrefix={map.tile.prefix}
+            mapPixelSize={map.mapPixelSize}
+            mapBoundingBox={map.mapBoundingBox}
+            transform={transform}
+          >
+            {mode === CaptureModes.TEXT && <ClickCapture mode={mode} onClick={handleAddLocation} />}
+            <TextLocationLayer
+              locations={locations}
+              activeLocationId={activeLocationId}
+              onClick={process.env.NEXT_PUBLIC_ENABLE_MOD_TEXT_LOCATION === 'true' ? handleClickLocation : undefined}
+              onActiveIdHide={(id, t) => ee.emit(MapEvents.ZOOM_TRANSFORM, t.k, t.x, t.y)}
+            />
+          </StaticMap>
+        </MapEventEmitter.Provider>
+        {isExportBarEnabled && (
+          <motion.div
+            className={styles.export}
+            animate={activeLocationId !== undefined ? 'sidebar' : 'normal'}
+            variants={OpsBarVariants}
+            transition={{ duration: 0.4 }}
+          >
+            {process.env.NEXT_PUBLIC_ENABLE_MOD_TEXT_LOCATION === 'true' && (
+              <span
+                className={mode === CaptureModes.TEXT ? styles.active : undefined}
+                onClick={() => downloadJSON(locations, map.id)}
+              >
+                A
+              </span>
+            )}
+          </motion.div>
+        )}
         <motion.div
-          className={styles.export}
+          className={styles.ops}
           animate={activeLocationId !== undefined ? 'sidebar' : 'normal'}
           variants={OpsBarVariants}
           transition={{ duration: 0.4 }}
@@ -182,49 +201,34 @@ export default function MapSets({ map }: InferGetStaticPropsType<typeof getStati
           {process.env.NEXT_PUBLIC_ENABLE_MOD_TEXT_LOCATION === 'true' && (
             <span
               className={mode === CaptureModes.TEXT ? styles.active : undefined}
-              onClick={() => downloadJSON(locations, map.id)}
+              onClick={() => (mode === undefined ? setMode(CaptureModes.TEXT) : setMode(undefined))}
             >
               A
             </span>
           )}
-        </motion.div>
-      )}
-      <motion.div
-        className={styles.ops}
-        animate={activeLocationId !== undefined ? 'sidebar' : 'normal'}
-        variants={OpsBarVariants}
-        transition={{ duration: 0.4 }}
-      >
-        {process.env.NEXT_PUBLIC_ENABLE_MOD_TEXT_LOCATION === 'true' && (
-          <span
-            className={mode === CaptureModes.TEXT ? styles.active : undefined}
-            onClick={() => (mode === undefined ? setMode(CaptureModes.TEXT) : setMode(undefined))}
-          >
-            A
+          <span className="iconfont" onClick={() => ee.emit(MapEvents.ZOOM_IN)}>
+            &#xe664;
           </span>
-        )}
-        <span className="iconfont" onClick={() => ee.emit(MapEvents.ZOOM_IN)}>
-          &#xe664;
-        </span>
-        <span className="iconfont" onClick={() => ee.emit(MapEvents.ZOOM_OUT)}>
-          &#xe67a;
-        </span>
-        <span className="iconfont" onClick={() => ee.emit(MapEvents.ZOOM_INITIAL)}>
-          &#xe709;
-        </span>
-      </motion.div>
-      <Sidebar title="新增地名" visiable={activeLocationId !== undefined}>
-        {activeLocationId !== undefined && (
-          <UpdateLocationForm
-            key={activeLocationId}
-            location={find(x => x.id === activeLocationId, locations)}
-            locations={locations}
-            onChange={handleModify}
-            onConfirm={() => setActiveLocation(undefined)}
-            onDelete={handleDelete}
-          />
-        )}
-      </Sidebar>
-    </div>
+          <span className="iconfont" onClick={() => ee.emit(MapEvents.ZOOM_OUT)}>
+            &#xe67a;
+          </span>
+          <span className="iconfont" onClick={() => ee.emit(MapEvents.ZOOM_INITIAL)}>
+            &#xe709;
+          </span>
+        </motion.div>
+        <Sidebar title="新增地名" visiable={activeLocationId !== undefined}>
+          {activeLocationId !== undefined && (
+            <UpdateLocationForm
+              key={activeLocationId}
+              location={find(x => x.id === activeLocationId, locations)}
+              locations={locations}
+              onChange={handleModify}
+              onConfirm={() => setActiveLocation(undefined)}
+              onDelete={handleDelete}
+            />
+          )}
+        </Sidebar>
+      </div>
+    </>
   )
 }

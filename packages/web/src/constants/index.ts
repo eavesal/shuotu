@@ -3,6 +3,14 @@ export enum GlobalPortals {
   SIDEBAR = 'sidebar',
 }
 
+export enum ENV {
+  LOCAL = 'local',
+  DEV = 'dev',
+  ST = 'st',
+  UAT = 'uat',
+  PROD = 'prod',
+}
+
 // 比如 埃及-锡瓦-XX营地-某某点
 //        0-  1-    2-    3
 //        1-  1-    2-    3

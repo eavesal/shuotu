@@ -1,5 +1,6 @@
 import { InferGetStaticPropsType } from 'next'
 import React from 'react'
+import { NextSeo } from 'next-seo'
 
 import NavBar from '../../components/NavBar'
 import { Game } from '../../types'
@@ -34,34 +35,37 @@ export const getStaticProps = async ({ params }) => {
 
 export default function MapSets({ data }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
-    <div className={styles.main}>
-      <div className={styles.bg} style={{ backgroundImage: `url(${data.cover})` }}>
-        <NavBar />
-        <h3>{data.name} 地图集</h3>
-      </div>
-      <div className={styles.content}>
-        <div className="view" style={{ minHeight: '60vh' }}>
-          <ul className={styles.maps}>
-            {data.maps.map(x => (
-              <Link
-                href={{
-                  pathname: `/${data.id}/${x.id}`,
-                  query: x.transform,
-                }}
-                key={x.id}
-              >
-                <li>
-                  <div className={styles.wrapper}>
-                    <img className={styles.cover} src={x.cover} />
-                    <span>{x.name}</span>
-                  </div>
-                </li>
-              </Link>
-            ))}
-          </ul>
+    <>
+      <NextSeo title={data.name} />
+      <div className={styles.main}>
+        <div className={styles.bg} style={{ backgroundImage: `url(${data.cover})` }}>
+          <NavBar />
+          <h3>{data.name} 地图集</h3>
         </div>
+        <div className={styles.content}>
+          <div className="view" style={{ minHeight: '60vh' }}>
+            <ul className={styles.maps}>
+              {data.maps.map(x => (
+                <Link
+                  href={{
+                    pathname: `/${data.id}/${x.id}`,
+                    query: x.transform,
+                  }}
+                  key={x.id}
+                >
+                  <li>
+                    <div className={styles.wrapper}>
+                      <img className={styles.cover} src={x.cover} />
+                      <span>{x.name}</span>
+                    </div>
+                  </li>
+                </Link>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </>
   )
 }

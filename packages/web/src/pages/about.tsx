@@ -1,11 +1,14 @@
 import React from 'react'
 import cx from 'classnames'
+import { NextSeo } from 'next-seo'
+
 import Footer from '../components/Footer'
 import NavBar from '../components/NavBar'
 
 export default function JoinPage() {
   return (
-    <div>
+    <>
+      <NextSeo title="关于我们" />
       <NavBar />
       <div className={cx('view')} style={{ minHeight: '75vh' }}>
         <h4>关于项目</h4>
@@ -17,6 +20,6 @@ export default function JoinPage() {
         <p>该项目目前没有产生盈利，也没有开放招聘。如果您对该项目有兴趣，欢迎在Github上进行讨论，或通过下方邮箱联系我。</p>
       </div>
       <Footer />
-    </div>
+    </>
   )
 }
