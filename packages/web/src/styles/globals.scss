@@ -1,4 +1,5 @@
 @import './variable.scss';
+@import './var';
 
 @import url('//at.alicdn.com/t/font_2238092_4knawtpwb0w.css');
 
@@ -37,10 +38,10 @@ select {
 a {
   color: var(--color-link);
   text-decoration: none;
-}
 
-a:visited {
-  color: var(--color-link-visited);
+  &:hover {
+    color: lighten($color-link, 10%);
+  }
 }
 
 h1 {
