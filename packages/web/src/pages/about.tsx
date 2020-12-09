@@ -5,7 +5,7 @@ import { NextSeo } from 'next-seo'
 import Footer from '../components/Footer'
 import NavBar from '../components/NavBar'
 
-export default function JoinPage() {
+export default function AboutPage() {
   return (
     <>
       <NextSeo title="关于我们" />
