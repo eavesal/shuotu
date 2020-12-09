@@ -1,2 +1,2 @@
-scripts
-/next.config.js
+scripts/**/*
+next.config.js

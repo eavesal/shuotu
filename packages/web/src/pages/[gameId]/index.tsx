@@ -9,6 +9,7 @@ import { getAll, getGameById } from '../api/game'
 
 import styles from './index.module.scss'
 import Footer from '../../components/Footer'
+import { getScreenshot } from '../api/util'
 
 export const getStaticPaths = async () => {
   const games: Game[] = getAll()
@@ -46,20 +47,22 @@ export default function MapSets({ data }: InferGetStaticPropsType<typeof getStat
           <div className="view" style={{ minHeight: '60vh' }}>
             <ul className={styles.maps}>
               {data.maps.map(x => (
-                <Link
-                  href={{
-                    pathname: `/${data.id}/${x.id}`,
-                    query: x.transform,
-                  }}
-                  key={x.id}
-                >
-                  <li>
-                    <div className={styles.wrapper}>
-                      <img className={styles.cover} src={x.cover} />
-                      <span>{x.name}</span>
-                    </div>
-                  </li>
-                </Link>
+                <li key={x.id}>
+                  <Link
+                    href={{
+                      pathname: `/${data.id}/${x.id}`,
+                      query: x.transform,
+                    }}
+                    passHref
+                  >
+                    <a>
+                      <div className={styles.wrapper}>
+                        <img className={styles.cover} src={getScreenshot(data.id, x.id)} />
+                        <span>{x.name}</span>
+                      </div>
+                    </a>
+                  </Link>
+                </li>
               ))}
             </ul>
           </div>

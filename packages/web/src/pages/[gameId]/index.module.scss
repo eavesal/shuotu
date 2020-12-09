@@ -37,6 +37,11 @@
   display: flex;
   flex-wrap: wrap;
 
+  a,
+  a:visited {
+    color: var(--text-color-secondary);
+  }
+
   li {
     flex: 0 0 25%;
     box-sizing: border-box;

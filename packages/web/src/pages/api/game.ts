@@ -22,7 +22,6 @@ export function getAll(): Game[] {
         {
           id: 'mengde',
           name: '蒙德',
-          cover: 'https://uploadstatic.mihoyo.com/contentweb/20200319/2020031921550320292.jpg',
           mapBoundingBox: [0, 0, 6144, 6144],
           mapPixelSize: [6144, 6144],
           tile: {
@@ -39,7 +38,6 @@ export function getAll(): Game[] {
         {
           id: 'liyue',
           name: '璃月',
-          cover: 'https://uploadstatic.mihoyo.com/contentweb/20200319/2020031921552395638.jpg',
           mapBoundingBox: [0, 0, 6144, 6144],
           mapPixelSize: [6144, 6144],
           tile: {
@@ -63,7 +61,6 @@ export function getAll(): Game[] {
         {
           id: 'hyrule',
           name: '海拉鲁',
-          cover: 'https://uploadstatic.mihoyo.com/contentweb/20200319/2020031921552395638.jpg',
           mapBoundingBox: [0, 0, 24000, 20000],
           mapPixelSize: [24000, 20000],
           tile: {
@@ -82,7 +79,6 @@ export function getAll(): Game[] {
         {
           id: 'norway',
           name: '挪威',
-          cover: 'http://n1.itc.cn/img8/wb/recom/2016/06/23/146664890542182548.JPEG',
           mapBoundingBox: [0, 0, 4096, 4096],
           mapPixelSize: [4096, 4096],
           tile: {
@@ -99,7 +95,6 @@ export function getAll(): Game[] {
         {
           id: 'england',
           name: '英格兰',
-          cover: 'http://p9.itc.cn/images01/20201113/164b3dcb2a714f30bee868a469ea75bb.png',
           mapBoundingBox: [0, 0, 8192, 8192],
           mapPixelSize: [8192, 8192],
           tile: {
@@ -116,7 +111,6 @@ export function getAll(): Game[] {
         {
           id: 'vinland',
           name: '温兰德',
-          cover: 'http://n1.itc.cn/img8/wb/recom/2016/06/23/146664890542182548.JPEG',
           mapBoundingBox: [0, 0, 4096, 4096],
           mapPixelSize: [4096, 4096],
           tile: {
@@ -133,7 +127,6 @@ export function getAll(): Game[] {
         {
           id: 'asgard',
           name: '阿斯加德',
-          cover: 'http://n1.itc.cn/img8/wb/recom/2016/06/23/146664890542182548.JPEG',
           mapBoundingBox: [0, 0, 4096, 4096],
           mapPixelSize: [4096, 4096],
           tile: {
@@ -150,7 +143,6 @@ export function getAll(): Game[] {
         {
           id: 'jotunheim',
           name: '约顿海姆',
-          cover: 'http://n1.itc.cn/img8/wb/recom/2016/06/23/146664890542182548.JPEG',
           mapBoundingBox: [0, 0, 4096, 4096],
           mapPixelSize: [4096, 4096],
           tile: {
@@ -174,7 +166,6 @@ export function getAll(): Game[] {
         {
           id: 'tsushima',
           name: '对马岛',
-          cover: 'https://cdn.progogame.com/uploads/20201103/00/55/d0760c8ec0.jpg',
           mapBoundingBox: [0, 0, 16384, 16384],
           mapPixelSize: [16384, 16384],
           tile: {
@@ -193,7 +184,6 @@ export function getAll(): Game[] {
         {
           id: 'hallownest',
           name: '圣巢',
-          cover: 'https://cdn.progogame.com/uploads/20201103/00/55/d0760c8ec0.jpg',
           mapBoundingBox: [0, 0, 4498, 2901],
           mapPixelSize: [4498, 2901],
           tile: {

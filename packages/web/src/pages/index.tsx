@@ -28,15 +28,17 @@ export default function Home({ games }: InferGetStaticPropsType<typeof getStatic
         <div className="view">
           <ul className={styles.games}>
             {games.map(x => (
-              <Link href={`/${x.id}`} key={x.id}>
-                <li>
-                  <div className={styles.wrapper}>
-                    <img className={styles.cover} src={x.cover} />
-                    {x.logo && <img className={styles.logo} src={x.logo} />}
-                    <span>{x.name}</span>
-                  </div>
-                </li>
-              </Link>
+              <li key={x.id}>
+                <Link href={`/${x.id}`} passHref>
+                  <a>
+                    <div className={styles.wrapper}>
+                      <img className={styles.cover} src={x.cover} />
+                      {x.logo && <img className={styles.logo} src={x.logo} />}
+                      <span>{x.name}</span>
+                    </div>
+                  </a>
+                </Link>
+              </li>
             ))}
           </ul>
         </div>
