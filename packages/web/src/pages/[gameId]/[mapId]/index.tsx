@@ -142,7 +142,15 @@ export default function MapSets({ map }: InferGetStaticPropsType<typeof getStati
 
   return (
     <>
-      <NextSeo title={map.name} />
+      <NextSeo
+        title={map.name}
+        additionalMetaTags={[
+          {
+            name: 'viewport',
+            content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
+          },
+        ]}
+      />
       <div className={styles.main}>
         <MapEventEmitter.Provider value={ee}>
           <StaticMap
