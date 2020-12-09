@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { UseFormMethods, Controller } from 'react-hook-form'
-import { stratify, HierarchyNode } from 'd3-hierarchy'
+import { HierarchyNode } from 'd3-hierarchy'
 
 import { MapLocation } from '../../types'
 import Field from './Field'
@@ -8,14 +8,9 @@ import Field from './Field'
 import styles from './LocationSelectField.module.scss'
 import { LOCATION_MAX_DEPTH } from '../../constants'
 
-const toTree = stratify<MapLocation>()
-
 function getAncestors(tree: HierarchyNode<MapLocation>, parentId: string) {
   const node = tree.find(x => x.id === parentId) || tree
-  return node
-    .ancestors()
-    .reverse()
-    .slice(0, LOCATION_MAX_DEPTH - 2)
+  return node.ancestors().reverse().slice(0, LOCATION_MAX_DEPTH)
 }
 
 interface LocationSelectFieldProps {
@@ -35,9 +30,10 @@ export default function LocationSelectField({ locations, control, name, label, a
           name={name}
           render={({ onBlur, onChange, value = '0' }) => {
             const nodes = getAncestors(locations, value)
+
             return (
               <>
-                {nodes.map((node, i) => (
+                {nodes.slice(0, LOCATION_MAX_DEPTH - 2).map((node, i) => (
                   <select
                     key={node.id}
                     name={name}
