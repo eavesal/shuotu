@@ -8,6 +8,7 @@ const env = dotenv.parse(fs.readFileSync(path.resolve(__dirname, `config/${proce
 
 module.exports = {
   env,
+  trailingSlash: true,
   webpack: config => {
     config.module.rules.push({
       test: /.*\.stories\.tsx?$/,

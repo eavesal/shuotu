@@ -26,10 +26,6 @@ if (!bucketName) {
 const config = new qiniu.conf.Config()
 config.zone = qiniu.zone.Zone_z2
 const bucketManager = new qiniu.rs.BucketManager(mac, config)
-const putPolicy = new qiniu.rs.PutPolicy({
-  scope: bucketName,
-})
-const uploadToken = putPolicy.uploadToken(mac)
 
 async function lsRemote(manager, name) {
   return new Promise((resolve, reject) => {
@@ -48,14 +44,19 @@ async function lsRemote(manager, name) {
           return resolve(body.items)
         }
 
-        return reject(err)
+        console.log(info)
+        return reject(info)
       },
     )
   })
 }
 
-async function uploadfile(config, token, folder, filename) {
+async function uploadfile(config, mac, folder, filename) {
   return new Promise((resolve, reject) => {
+    const putPolicy = new qiniu.rs.PutPolicy({
+      scope: `${bucketName}:${filename}`,
+    })
+    const token = putPolicy.uploadToken(mac)
     const formUploader = new qiniu.form_up.FormUploader(config)
     const putExtra = new qiniu.form_up.PutExtra()
 
@@ -73,7 +74,9 @@ async function uploadfile(config, token, folder, filename) {
         if (info.statusCode === 200) {
           return resolve(body)
         }
-        return reject(err)
+
+        console.log(info)
+        return reject(info)
       },
     )
   })
@@ -96,7 +99,8 @@ async function deleteFiles(manager, name, files) {
       if (info.statusCode === 200) {
         return resolve(body)
       }
-      return reject(err)
+
+      return resolve()
     })
   })
 }
@@ -127,7 +131,7 @@ async function sync() {
   await deleteFiles(bucketManager, bucketName, filesToBeDeleted)
   for (let i = 0; i < filesToBeUploaded.length; i++) {
     const file = filesToBeUploaded[i]
-    await uploadfile(config, uploadToken, distFolder, file.key)
+    await uploadfile(config, mac, distFolder, file.key)
   }
 }
 
