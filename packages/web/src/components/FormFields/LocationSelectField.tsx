@@ -21,17 +21,12 @@ function getAncestors(tree: HierarchyNode<MapLocation>, parentId: string) {
 interface LocationSelectFieldProps {
   activeId: string
   name: string
-  options: MapLocation[]
+  locations: HierarchyNode<MapLocation>
   label: string
   control: UseFormMethods['control']
 }
 
-export default function LocationSelectField({ options, control, name, label, activeId }: LocationSelectFieldProps) {
-  // change hierarchy when relationship changed
-  const relationship = useMemo(() => options.map(x => `${x.id}${x.parentId}`).join(), [options])
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const tree = useMemo(() => toTree(options), [relationship])
-
+export default function LocationSelectField({ locations, control, name, label, activeId }: LocationSelectFieldProps) {
   return (
     <Field label={label}>
       <div className={styles.selects}>
@@ -39,7 +34,7 @@ export default function LocationSelectField({ options, control, name, label, act
           control={control}
           name={name}
           render={({ onBlur, onChange, value = '0' }) => {
-            const nodes = getAncestors(tree, value)
+            const nodes = getAncestors(locations, value)
             return (
               <>
                 {nodes.map((node, i) => (

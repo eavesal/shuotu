@@ -11,12 +11,23 @@
 }
 
 .title {
+  position: relative;
   margin: 0;
   padding: var(--size-sl) 0;
   font-weight: normal;
   text-align: center;
 
   border-bottom: 1px dashed var(--border-color-light);
+
+  & button {
+    position: absolute;
+    right: var(--size-sl);
+    top: 50%;
+    transform: translateY(-50%);
+
+    margin-top: auto;
+    margin-bottom: auto;
+  }
 }
 
 .content {

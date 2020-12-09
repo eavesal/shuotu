@@ -35,7 +35,4 @@ module.exports = {
       },
     },
   ],
-  linterOptions: {
-    exclude: ['srcripts'],
-  },
 }

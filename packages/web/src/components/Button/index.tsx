@@ -32,11 +32,12 @@ export default function Button({
   enableLoading = false,
   loading = false,
   disabled = false,
+  className,
   ...rest
 }: ButtonProps) {
   return (
     <button
-      className={cx(styles.button, styles[size], styles[apperance], enableLoading ? styles.loadingBtn : undefined)}
+      className={cx(styles.button, styles[size], styles[apperance], enableLoading ? styles.loadingBtn : undefined, className)}
       disabled={loading || disabled}
       {...rest}
     >

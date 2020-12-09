@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
+import { HierarchyNode } from 'd3-hierarchy'
 
 import Button, { ButtonApperance, ButtonSize } from '../Button'
 import { MapLocation } from '../../types/index'
@@ -20,13 +21,13 @@ type FormValues = {
 
 interface UpdateLocationFormProps {
   location: MapLocation
-  locations: MapLocation[]
+  locations: HierarchyNode<MapLocation>
   onChange?(id: string, data: Partial<MapLocation>): void
-  onConfirm?(): void
-  onDelete?(id: string): void
+  onSubmit?(id: string, data: Partial<MapLocation>): void
+  onCancel?(): void
 }
 
-export default function UpdateLocationForm({ location, locations, onChange, onConfirm, onDelete }: UpdateLocationFormProps) {
+export default function UpdateLocationForm({ location, locations, onChange, onSubmit, onCancel }: UpdateLocationFormProps) {
   const { id } = location
   const defaultValues = useMemo(
     () => ({
@@ -58,25 +59,22 @@ export default function UpdateLocationForm({ location, locations, onChange, onCo
       })
   }, [id, label, pos, parentId, onChange])
 
-  const onSubmit = useCallback(
+  const submit = useCallback(
     async (data: FormValues) => {
       if (data.label) {
-        onChange &&
-          onChange(id, {
+        onSubmit &&
+          onSubmit(id, {
             label: data.label,
             pos: data.pos.map(x => parseFloat(x.value)) as Point,
             parentId: data.parentId,
           })
-        onConfirm && onConfirm()
-      } else {
-        onDelete && onDelete(id)
       }
     },
-    [id, onChange, onConfirm, onDelete],
+    [id, onSubmit],
   )
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+    <form onSubmit={handleSubmit(submit)} className={styles.form}>
       <PointInputField name="pos" label="坐标:" register={register} control={control} />
       <InputField
         type="text"
@@ -88,10 +86,10 @@ export default function UpdateLocationForm({ location, locations, onChange, onCo
         fieldError={errors ? errors.label : undefined}
         required
       />
-      <LocationSelectField name="parentId" label="所属区域" activeId={id} options={locations} control={control} />
+      <LocationSelectField name="parentId" label="所属区域" activeId={id} locations={locations} control={control} />
       <div className={styles.btns}>
-        <Button size={ButtonSize.S} apperance={ButtonApperance.TERTIARY} type="reset" onClick={() => onDelete(id)}>
-          删除
+        <Button size={ButtonSize.S} apperance={ButtonApperance.TERTIARY} type="reset" onClick={onCancel}>
+          取消
         </Button>
         <Button size={ButtonSize.S} apperance={ButtonApperance.PRIMARY} type="submit">
           确认

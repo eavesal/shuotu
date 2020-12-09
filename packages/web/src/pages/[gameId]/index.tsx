@@ -1,13 +1,13 @@
 import { InferGetStaticPropsType } from 'next'
 import React from 'react'
 import { NextSeo } from 'next-seo'
+import Link from 'next/link'
 
 import NavBar from '../../components/NavBar'
 import { Game } from '../../types'
 import { getAll, getGameById } from '../api/game'
 
 import styles from './index.module.scss'
-import Link from 'next/link'
 import Footer from '../../components/Footer'
 
 export const getStaticPaths = async () => {

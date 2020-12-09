@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo } from 'react'
+import React, { useContext, useMemo } from 'react'
 import { stratify, HierarchyNode } from 'd3-hierarchy'
 import { last, max } from 'ramda'
 import cx from 'classnames'
@@ -17,7 +17,7 @@ enum Depths {
   S = 3,
 }
 const DepthArray = [Depths.L, Depths.M, Depths.S]
-const DepthToClassName = {
+export const DepthToClassName = {
   [Depths.L]: styles.l,
   [Depths.M]: styles.m,
   [Depths.S]: styles.s,
@@ -49,10 +49,10 @@ interface TextLocationLayerProps {
   locations: MapLocation[]
   activeLocationId?: string
   onClick?(id: string): void
-  onActiveIdHide?(id: string, transform: { x: number; y: number; k: number })
+  // onActiveIdHide?(id: string, transform: { x: number; y: number; k: number })
 }
 
-export default function TextLocationLayer({ locations, activeLocationId, onClick, onActiveIdHide }: TextLocationLayerProps) {
+export default function TextLocationLayer({ locations, activeLocationId, onClick }: TextLocationLayerProps) {
   const root = useMemo(() => toTree(locations), [locations])
   const depthArray = useMemo(() => DepthArray.slice(0, root.height), [root.height])
   const { mapPixelSize } = useContext(MapContext)
@@ -71,18 +71,19 @@ export default function TextLocationLayer({ locations, activeLocationId, onClick
   const worldPoints = useMemo(() => nodes.map(x => x.data.pos), [nodes])
   const points = useApplyPoints(...worldPoints)
 
+  // design changed, comment for now
   // make zoom transform when active location not in the view (through k)
-  useEffect(() => {
-    if (!activeLocationId) {
-      return
-    }
+  // useEffect(() => {
+  //   if (!activeLocationId) {
+  //     return
+  //   }
 
-    const activeNode = root.find(x => x.id === activeLocationId)
-    if (!nodes.includes(activeNode)) {
-      const k = (scaleArray[activeNode.depth] + scaleArray[activeNode.depth - 1]) / 2
-      onActiveIdHide(activeNode.id, { k, x: activeNode.data.pos[0], y: activeNode.data.pos[1] })
-    }
-  }, [activeLocationId, nodes, onActiveIdHide, root, scaleArray])
+  //   const activeNode = root.find(x => x.id === activeLocationId)
+  //   if (!nodes.includes(activeNode)) {
+  //     const k = (scaleArray[activeNode.depth] + scaleArray[activeNode.depth - 1]) / 2
+  //     onActiveIdHide(activeNode.id, { k, x: activeNode.data.pos[0], y: activeNode.data.pos[1] })
+  //   }
+  // }, [activeLocationId, nodes, onActiveIdHide, root, scaleArray])
 
   if (depth === 0) {
     return null
@@ -90,24 +91,22 @@ export default function TextLocationLayer({ locations, activeLocationId, onClick
 
   return (
     <>
-      {nodes.map((x, i) => (
-        <text
-          key={x.id}
-          x={points[i][0]}
-          y={points[i][1]}
-          className={cx(
-            styles.text,
-            DepthToClassName[x.depth],
-            onClick ? styles.clickable : undefined,
-            activeLocationId === x.id ? styles.active : undefined,
-          )}
-          onClick={() => onClick && onClick(x.id)}
-          textAnchor="middle"
-          dominantBaseline="middle"
-        >
-          {x.data.label}
-        </text>
-      ))}
+      {nodes.map(
+        (x, i) =>
+          x.id !== activeLocationId && (
+            <text
+              key={x.id}
+              x={points[i][0]}
+              y={points[i][1]}
+              className={cx(styles.text, DepthToClassName[x.depth], onClick ? styles.clickable : undefined)}
+              onClick={() => onClick && onClick(x.id)}
+              textAnchor="middle"
+              dominantBaseline="middle"
+            >
+              {x.data.label}
+            </text>
+          ),
+      )}
     </>
   )
 }

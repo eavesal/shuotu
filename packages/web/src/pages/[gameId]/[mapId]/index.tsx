@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { EventEmitter } from 'events'
 import { InferGetStaticPropsType } from 'next'
-import { equals, find, findIndex, max, update } from 'ramda'
-import { motion } from 'framer-motion'
+import { equals, findIndex, max, update } from 'ramda'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useRouter } from 'next/router'
 import { NextSeo } from 'next-seo'
 
@@ -17,9 +17,8 @@ import ClickCapture, { CaptureModes } from '../../../components/Map/ClickCapture
 
 import styles from './index.module.scss'
 import { Point } from '../../../components/Map/types'
-import Sidebar from '../../../components/Sidebar'
-import UpdateLocationForm from '../../../components/UpdateLocationForm'
 import { downloadJSON } from '../../../utils'
+import ActiveTextLocation from '../../../components/Map/ActiveTextLocation'
 
 export const getStaticPaths = async () => {
   const games: Game[] = getAll()
@@ -63,25 +62,13 @@ const OpsBarVariants = {
 
 const isExportBarEnabled = process.env.NEXT_PUBLIC_ENABLE_MOD_TEXT_LOCATION === 'true'
 
-function removeRecursively(id: string, locations: MapLocation[]) {
-  const parentIds = new Set(id)
-  let results = locations.filter(x => x.id !== id)
-
-  while (parentIds.size > 0) {
-    const prevLength = results.length
-    results = results.filter(x => {
-      const shouldBeDeleted = parentIds.has(x.parentId)
-      if (shouldBeDeleted) {
-        parentIds.add(x.id)
-      }
-      return !shouldBeDeleted
-    })
-
-    if (prevLength === results.length) {
-      break
-    }
+function removeRecursively(ids: Set<string>, locations: MapLocation[]) {
+  const nextIds = new Set(locations.filter(x => ids.has(x.parentId)).map(x => x.id))
+  const nextLocations = locations.filter(x => !ids.has(x.id))
+  if (nextIds.size > 0) {
+    return removeRecursively(nextIds, nextLocations)
   }
-  return results
+  return nextLocations
 }
 
 export default function MapSets({ map }: InferGetStaticPropsType<typeof getStaticProps>) {
@@ -129,7 +116,7 @@ export default function MapSets({ map }: InferGetStaticPropsType<typeof getStati
     [getLocationId, locations],
   )
 
-  const handleModify = useCallback(
+  const handleSubmit = useCallback(
     (id: string, data: Partial<MapLocation>) => {
       const i = findIndex(x => x.id === id, locations)
       const location = locations[i]
@@ -139,17 +126,15 @@ export default function MapSets({ map }: InferGetStaticPropsType<typeof getStati
           setLocations(update(i, newLocation, locations))
         }
       }
+      setActiveLocation(undefined)
     },
     [locations],
   )
 
-  const handleDelete = useCallback(
-    (id: string) => {
-      setActiveLocation(undefined)
-      setLocations(removeRecursively(id, locations))
-    },
-    [locations],
-  )
+  const handleDelete = useCallback(() => {
+    setActiveLocation(undefined)
+    setLocations(removeRecursively(new Set([activeLocationId]), locations))
+  }, [activeLocationId, locations])
 
   const handleClickLocation = useCallback((id: string) => {
     setActiveLocation(id)
@@ -171,8 +156,19 @@ export default function MapSets({ map }: InferGetStaticPropsType<typeof getStati
               locations={locations}
               activeLocationId={activeLocationId}
               onClick={process.env.NEXT_PUBLIC_ENABLE_MOD_TEXT_LOCATION === 'true' ? handleClickLocation : undefined}
-              onActiveIdHide={(id, t) => ee.emit(MapEvents.ZOOM_TRANSFORM, t.k, t.x, t.y)}
             />
+            <AnimatePresence>
+              {activeLocationId && (
+                <ActiveTextLocation
+                  key={activeLocationId}
+                  activeLocationId={activeLocationId}
+                  locations={locations}
+                  onSubmit={handleSubmit}
+                  onDelete={handleDelete}
+                  onCancel={() => setActiveLocation(undefined)}
+                />
+              )}
+            </AnimatePresence>
           </StaticMap>
         </MapEventEmitter.Provider>
         {isExportBarEnabled && (
@@ -216,18 +212,6 @@ export default function MapSets({ map }: InferGetStaticPropsType<typeof getStati
             &#xe709;
           </span>
         </motion.div>
-        <Sidebar title="新增地名" visiable={activeLocationId !== undefined}>
-          {activeLocationId !== undefined && (
-            <UpdateLocationForm
-              key={activeLocationId}
-              location={find(x => x.id === activeLocationId, locations)}
-              locations={locations}
-              onChange={handleModify}
-              onConfirm={() => setActiveLocation(undefined)}
-              onDelete={handleDelete}
-            />
-          )}
-        </Sidebar>
       </div>
     </>
   )

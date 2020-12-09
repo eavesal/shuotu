@@ -5,18 +5,30 @@ interface PortalProps {
   id: string
 }
 
-export class Portal extends React.Component<PortalProps> {
-  element: HTMLElement
+interface PortalState {
+  element?: HTMLElement
+}
+
+export class Portal extends React.Component<PortalProps, PortalState> {
+  constructor(props: PortalProps) {
+    super(props)
+
+    this.state = {
+      element: null,
+    }
+  }
 
   componentDidMount() {
-    this.element = document.querySelector('#' + this.props.id)
+    this.setState({
+      element: document.querySelector('#' + this.props.id),
+    })
   }
 
   render() {
-    if (!this.element) {
+    if (!this.state.element) {
       return null
     }
 
-    return ReactDOM.createPortal(this.props.children, this.element)
+    return ReactDOM.createPortal(this.props.children, this.state.element)
   }
 }
