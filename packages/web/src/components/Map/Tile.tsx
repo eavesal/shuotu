@@ -34,29 +34,33 @@ export default function Tile({ tileSize, tilePrefix }: TileProps) {
   const T = useContext(ZoomContext)
   const tiler = useTile(tileSize)
 
-  return deltas.map(delta => {
-    const tiles = tiler.zoomDelta(delta)(T)
-    return (
-      <g key={delta}>
-        {tiles.map(([x, y, z]: [number, number, number]) => {
-          const size = getTileSize(z, x, y)
+  return (
+    <>
+      {deltas.map(delta => {
+        const tiles = tiler.zoomDelta(delta)(T)
+        return (
+          <g key={delta}>
+            {tiles.map(([x, y, z]: [number, number, number]) => {
+              const size = getTileSize(z, x, y)
 
-          if (size[0] <= 0 || size[1] <= 0) {
-            return null
-          }
+              if (size[0] <= 0 || size[1] <= 0) {
+                return null
+              }
 
-          return (
-            <image
-              key={`${z}-${x}-${y}`}
-              xlinkHref={`${tilePrefix}/${z}-${x}-${y}.png`}
-              x={(x + tiles.translate[0]) * tiles.scale}
-              y={(y + tiles.translate[1]) * tiles.scale}
-              width={(tiles.scale * size[0]) / 256}
-              height={(tiles.scale * size[1]) / 256}
-            />
-          )
-        })}
-      </g>
-    )
-  })
+              return (
+                <image
+                  key={`${z}-${x}-${y}`}
+                  xlinkHref={`${tilePrefix}/${z}-${x}-${y}.png`}
+                  x={(x + tiles.translate[0]) * tiles.scale}
+                  y={(y + tiles.translate[1]) * tiles.scale}
+                  width={(tiles.scale * size[0]) / 256}
+                  height={(tiles.scale * size[1]) / 256}
+                />
+              )
+            })}
+          </g>
+        )
+      })}
+    </>
+  )
 }
