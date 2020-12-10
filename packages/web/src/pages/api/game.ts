@@ -2,8 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { find } from 'ramda'
 import { Point } from '../../components/Map/types'
 import { Game } from '../../types'
-import { Games, OSS } from '../../types/enums'
-import { getAssets, getTile } from './util'
+import { Games } from '../../types/enums'
+import { getTile } from './util'
 
 const StaticHead = {
   id: '0',
@@ -16,8 +16,7 @@ export function getAll(): Game[] {
     {
       id: Games.GenshinImpact,
       name: '原神',
-      cover: getAssets(Games.GenshinImpact, 'cover.jpg', OSS.QINGYUN),
-      logo: getAssets(Games.GenshinImpact, 'logo.png', OSS.QINGYUN),
+      cover: 'https://ys.mihoyo.com/main/_nuxt/img/47f71d4.jpg',
       maps: [
         {
           id: 'mengde',
@@ -68,6 +67,42 @@ export function getAll(): Game[] {
             prefix: getTile(Games.ZeldaBow, 'hyrule', 'v1'),
           },
           locations: require('./zelda_bow/locations/hyrule.json'),
+        },
+      ],
+    },
+    {
+      id: Games.GhostOfTsushima,
+      name: '对马岛之魂',
+      cover: 'https://cdn.progogame.com/uploads/20201103/00/55/d0760c8ec0.jpg',
+      maps: [
+        {
+          id: 'tsushima',
+          name: '对马岛',
+          mapBoundingBox: [0, 0, 16384, 16384],
+          mapPixelSize: [16384, 16384],
+          tile: {
+            size: 256,
+            prefix: getTile(Games.GhostOfTsushima, 'tsushima', 'v1'),
+          },
+          locations: require('./ghost_of_tsushima/locations/tsushima.json'),
+        },
+      ],
+    },
+    {
+      id: Games.HollowKnight,
+      name: '空洞骑士',
+      cover: 'http://5b0988e595225.cdn.sohucs.com/images/20181113/3d7c7d9566554251aedb125fbc8b8b73.jpeg',
+      maps: [
+        {
+          id: 'hallownest',
+          name: '圣巢',
+          mapBoundingBox: [0, 0, 8996, 6302],
+          mapPixelSize: [8996, 6302],
+          tile: {
+            size: 256,
+            prefix: getTile(Games.HollowKnight, 'hallownest', 'v2'),
+          },
+          locations: [StaticHead],
         },
       ],
     },
@@ -155,42 +190,6 @@ export function getAll(): Game[] {
             x: 2048,
             y: 2048,
           },
-        },
-      ],
-    },
-    {
-      id: Games.GhostOfTsushima,
-      name: '对马岛之魂',
-      cover: 'https://cdn.progogame.com/uploads/20201103/00/55/d0760c8ec0.jpg',
-      maps: [
-        {
-          id: 'tsushima',
-          name: '对马岛',
-          mapBoundingBox: [0, 0, 16384, 16384],
-          mapPixelSize: [16384, 16384],
-          tile: {
-            size: 256,
-            prefix: getTile(Games.GhostOfTsushima, 'tsushima', 'v1'),
-          },
-          locations: [StaticHead],
-        },
-      ],
-    },
-    {
-      id: Games.HollowKnight,
-      name: '空洞骑士',
-      cover: 'http://5b0988e595225.cdn.sohucs.com/images/20181113/3d7c7d9566554251aedb125fbc8b8b73.jpeg',
-      maps: [
-        {
-          id: 'hallownest',
-          name: '圣巢',
-          mapBoundingBox: [0, 0, 4498, 2901],
-          mapPixelSize: [4498, 2901],
-          tile: {
-            size: 256,
-            prefix: getTile(Games.HollowKnight, 'hallownest', 'v1'),
-          },
-          locations: [StaticHead],
         },
       ],
     },
