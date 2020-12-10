@@ -21,7 +21,7 @@ export default function PointInputField({ name, label, control, register }: Poin
     <Field label={label}>
       <div className={styles.field}>
         {fields.map((field, i) => (
-          <input key={field.id} type="number" name={`${name}[${i}].value`} ref={register()} defaultValue={field.value} />
+          <input key={field.id} type="number" name={`${name}[${i}].value`} ref={register()} value={field.value} readOnly />
         ))}
       </div>
     </Field>

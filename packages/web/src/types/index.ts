@@ -1,3 +1,4 @@
+import { Point } from '../components/Map/types'
 import { Games } from './enums'
 
 export type Transform = {
@@ -11,7 +12,7 @@ export type MapLocation = {
   label: string
   // 根结点无parentId
   parentId?: string
-  pos: [number, number]
+  pos: Point
 }
 
 export type MapSet = {

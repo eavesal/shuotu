@@ -44,6 +44,11 @@
   border-color: var(--border-color-active);
 }
 
+.field input:read-only {
+  cursor: not-allowed;
+  border-color: var(--border-color-primary);
+}
+
 .hideSpin {
   -moz-appearance: textfield;
 }

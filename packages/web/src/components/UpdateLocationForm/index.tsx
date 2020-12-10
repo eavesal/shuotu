@@ -5,11 +5,11 @@ import { HierarchyNode } from 'd3-hierarchy'
 import Button, { ButtonApperance, ButtonSize } from '../Button'
 import { MapLocation } from '../../types/index'
 import InputField from '../FormFields/InputField'
-
-import styles from './index.module.scss'
 import PointInputField from '../FormFields/PointInputField'
 import { Point } from '../Map/types'
 import LocationSelectField from '../FormFields/LocationSelectField'
+
+import styles from './index.module.scss'
 
 type FormValues = {
   pos: {
@@ -36,16 +36,16 @@ export default function UpdateLocationForm({ location, locations, onChange, onSu
       parentId: location.parentId,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [id],
+    [id, location.pos],
   )
-  const { errors, handleSubmit, register, control } = useForm<FormValues>({
+  const { errors, handleSubmit, register, control, setValue } = useForm<FormValues>({
     defaultValues: defaultValues,
     reValidateMode: 'onSubmit',
   })
 
-  const { label, pos, parentId } = useWatch({
+  const { label, parentId } = useWatch({
     control,
-    name: ['label', 'pos', 'parentId'],
+    name: ['label', 'parentId'],
     defaultValue: defaultValues,
   })
 
@@ -54,10 +54,13 @@ export default function UpdateLocationForm({ location, locations, onChange, onSu
       onChange &&
       onChange(id, {
         label,
-        pos: pos.map(x => parseFloat(x.value)) as Point,
         parentId,
       })
-  }, [id, label, pos, parentId, onChange])
+  }, [id, label, parentId, onChange])
+
+  useEffect(() => {
+    setValue('pos', defaultValues.pos)
+  }, [defaultValues, setValue])
 
   const submit = useCallback(
     async (data: FormValues) => {
@@ -65,7 +68,7 @@ export default function UpdateLocationForm({ location, locations, onChange, onSu
         onSubmit &&
           onSubmit(id, {
             label: data.label,
-            pos: data.pos.map(x => parseFloat(x.value)) as Point,
+            pos: data.pos.map(x => parseInt(x.value)) as Point,
             parentId: data.parentId,
           })
       }

@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "classnames": "2.2.6",
+    "d3-drag": "2.0.0",
     "d3-hierarchy": "2.0.0",
     "d3-selection": "2.0.0",
     "d3-tile": "1.0.0",

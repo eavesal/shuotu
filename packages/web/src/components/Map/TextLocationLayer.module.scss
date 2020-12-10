@@ -6,6 +6,7 @@
 
 .active {
   text-shadow: 0 0 1px var(--background-button-origin), 0 0 2px var(--background-button-origin);
+  cursor: grab;
 }
 
 .clickable {

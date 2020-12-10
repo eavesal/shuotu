@@ -17,7 +17,7 @@ export function useApplyPointsFn() {
   const [bx, by, mapWidth, mapHeight] = mapBoundingBox
 
   return useCallback(
-    (...points: Point[]) =>
+    (...points: Point[]): Point[] =>
       points.map(([px, py]) => [((px - bx) / mapWidth - 0.5) * k + x, ((py - by) / mapHeight - 0.5) * k + y]),
     [bx, by, mapHeight, mapWidth, k, x, y],
   )

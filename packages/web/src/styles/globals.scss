@@ -38,9 +38,10 @@ select {
 a {
   color: var(--color-link);
   text-decoration: none;
+  transition: color 0.2s linear;
 
   &:hover {
-    color: lighten($color-link, 10%);
+    color: lighten($color-link, 5%);
   }
 }
 
