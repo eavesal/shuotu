@@ -6,8 +6,8 @@
   "license": "MIT",
   "scripts": {
     "source": "set -o allexport; source .env; set +o allexport",
-    "prebuild": "rimraf dist",
-    "build": "nest build",
+    "prebuild": "rm -rf dist",
+    "build": "nest build --webpack -p tsconfig.build.json",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "npm run start:dev",
     "start:dev": "cross-env NODE_ENV=development nest start --watch",
@@ -43,7 +43,6 @@
     "passport-jwt": "4.0.0",
     "ramda": "^0.27.1",
     "reflect-metadata": "^0.1.13",
-    "rimraf": "^3.0.2",
     "rxjs": "^6.5.5",
     "sequelize": "5",
     "sequelize-typescript": "1.1.0"

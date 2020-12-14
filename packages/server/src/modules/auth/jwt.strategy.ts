@@ -22,8 +22,6 @@ export class JWTStrategy extends PassportStrategy(Strategy) {
     if (!user) {
       throw new AuthenticationError('您的登录凭证已失效，请重新登录')
     }
-
-    console.log('****user is validated***')
     return user
   }
 }
