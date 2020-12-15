@@ -15,6 +15,13 @@ pipeline{
     }
 
     stages{
+
+        stage ('debug') {
+            steps {
+                sh 'echo $DOCKER_USERNAME'
+            }
+        }
+
         stage ('Checkout') {
             steps {
                 checkout(scm)
@@ -36,10 +43,10 @@ pipeline{
                 container ('nodejs') {
                     dir ("packages/${WORKING_SERVICE}") {
                         sh 'yarn run build'
-                        sh 'docker build -f Dockerfile -t $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER .'
-                        withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD' ,usernameVariable : 'DOCKER_USERNAME' ,credentialsId : "$DOCKER_CREDENTIAL_ID" ,)]) {
+                        sh 'docker build -u jenkins:999 -f Dockerfile -t $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER .'
+                        withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD', usernameVariable : 'DOCKER_USERNAME', credentialsId : "$DOCKER_CREDENTIAL_ID")]) {
                             sh 'echo "$DOCKER_PASSWORD" | docker login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
-                            sh 'docker push  $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER'
+                            sh 'docker push $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER'
                         }
                     }       
                 }
