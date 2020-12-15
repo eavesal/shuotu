@@ -2,20 +2,36 @@ pipeline{
     agent{
         label "nodejs"
     }
+
+    environment {
+        DOCKER_CREDENTIAL_ID = 'docker-hub'
+        KUBECONFIG_CREDENTIAL_ID = 'kubeconfig'
+        WORKING_SERVICE = 'server'
+    }
+
     stages{
-        stage("A"){
-            steps{
-                echo "========executing A========"
+        stage ('Checkout') {
+            steps {
+                checkout(scm)
             }
-            post{
-                always{
-                    echo "========always========"
+        }
+
+        stage("Install"){
+            dir ("packages/${WORKING_SERVICE}") {
+                steps {
+                    container ('nodejs') {
+                        sh 'yarn install'
+                    }
                 }
-                success{
-                    echo "========A executed successfully========"
-                }
-                failure{
-                    echo "========A execution failed========"
+            }
+        }
+
+        stage("Build"){
+            dir ("packages/${WORKING_SERVICE}") {
+                steps {
+                    container ('nodejs') {
+                        sh 'yarn run build'
+                    }
                 }
             }
         }
