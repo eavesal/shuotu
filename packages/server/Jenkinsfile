@@ -16,26 +16,27 @@ pipeline{
             }
         }
 
-        stage("Install"){
-            dir ("packages/${WORKING_SERVICE}") {
-                steps {
-                    container ('nodejs') {
+        stage ("Install") {
+            steps {
+                container ('nodejs') {
+                    dir ("packages/${WORKING_SERVICE}") {
                         sh 'yarn install'
                     }
                 }
             }
         }
 
-        stage("Build"){
-            dir ("packages/${WORKING_SERVICE}") {
-                steps {
-                    container ('nodejs') {
+        stage ("Build"){
+            steps {
+                container ('nodejs') {
+                    dir ("packages/${WORKING_SERVICE}") {
                         sh 'yarn run build'
-                    }
+                    }       
                 }
             }
         }
     }
+
     post{
         always{
             echo "========always========"
