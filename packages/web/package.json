@@ -9,7 +9,7 @@
     "build": "cross-env-shell ENV=local \"next build && next export\"",
     "build:dev": "cross-env-shell ENV=dev \"next build && next export\"",
     "build:prod": "cross-env-shell ENV=prod \"next build && next export\"",
-    "start": "next start",
+    "start": "cross-env ENV=local next start",
     "lint": "eslint --ext js,ts,tsx --fix components pages hooks",
     "deploy:dev": "npm run build && node scripts/deploy.js dev",
     "deploy:prod": "npm run build && node scripts/deploy.js prod"
