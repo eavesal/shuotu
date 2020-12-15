@@ -6,7 +6,12 @@ pipeline{
     environment {
         DOCKER_CREDENTIAL_ID = 'docker-hub'
         KUBECONFIG_CREDENTIAL_ID = 'kubeconfig'
+
         WORKING_SERVICE = 'server'
+
+        REGISTRY = 'hub.docker.com'
+        DOCKERHUB_NAMESPACE = 'lijingyu68'
+        APP_NAME = 'shuotu.fun'
     }
 
     stages{
@@ -31,6 +36,11 @@ pipeline{
                 container ('nodejs') {
                     dir ("packages/${WORKING_SERVICE}") {
                         sh 'yarn run build'
+                        sh 'docker build -f Dockerfile -t $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER .'
+                        withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD' ,usernameVariable : 'DOCKER_USERNAME' ,credentialsId : "$DOCKER_CREDENTIAL_ID" ,)]) {
+                            sh 'echo "$DOCKER_PASSWORD" | docker login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
+                            sh 'docker push  $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER'
+                        }
                     }       
                 }
             }
