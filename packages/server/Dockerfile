@@ -8,7 +8,7 @@ COPY package*.json ./
 COPY .npmrc ./
 RUN npm install --only=production
 
-COPY --from=development /dist/main.js ./
+COPY dist/main.js ./
 
 EXPOSE 80
 
