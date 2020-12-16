@@ -6,7 +6,7 @@ WORKDIR /usr/app
 
 COPY package*.json ./
 COPY .npmrc ./
-RUN npm install --only=production
+RUN yarn install --only=production
 
 COPY dist/main.js ./
 

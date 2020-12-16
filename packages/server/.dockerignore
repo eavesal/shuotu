@@ -1,4 +1,14 @@
-dist
-migration
-node_modules
-test
+# ignore everything
+**
+
+# include files that should inside the docker container
+!package.json
+!package-lock.json
+!yarn.lock
+!dist/main.js
+!.npmrc
+
+# Ignore unnecessary files inside allowed directories
+# Do not change the order
+**/*.log
+**/.DS_Store
