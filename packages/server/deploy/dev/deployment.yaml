@@ -23,7 +23,7 @@ spec:
         tier: backend
     spec:
       containers:
-        - name: $APP_NAME:
+        - name: $APP_NAME
           env:
             - name: NODE_ENV
               value: production
