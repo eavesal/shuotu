@@ -2,31 +2,46 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: shuotu-fun
-    component: shuotu-fun-server
+    app: shuotu
+    component: shuotu-server
     tier: backend
-  name: ks-sample-dev
+  name: shuotu-server
   namespace: shuotu-dev
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
   selector:
     matchLabels:
-      app: shuotu-fun
-      component: shuotu-fun-server
+      app: shuotu
+      component: shuotu-server
       tier: backend
   template:
     metadata:
       labels:
-        app: shuotu-fun
-        component: shuotu-fun-server
+        app: shuotu
+        component: shuotu-server
         tier: backend
     spec:
       containers:
-        - name: $APP_NAME
+        - name: shuotu-server-dev
+          envFrom:
+          - configMapRef:
+            name: shuotu-server-dev-config
+          - secretRef:
+            name: common-key-value-dev
           env:
             - name: NODE_ENV
               value: production
+            - name: MYSQL_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-shuotu-dev
+                  key: username
+            - name: MYSQL_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-shuotu-dev
+                  key: password
           image: $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER
           readinessProbe:
             httpGet:

@@ -2,9 +2,9 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: shuotu-fun
-    component: shuotu-fun-server
-  name: shuotu-fun-server
+    app: shuotu
+    component: shuotu-server
+  name: shuotu-server-svc
   namespace: shuotu-dev
 spec:
   ports:
@@ -14,8 +14,8 @@ spec:
       targetPort: 80
       nodePort: 30861
   selector:
-    app: shuotu-fun
-    component: shuotu-fun-server
+    app: shuotu
+    component: shuotu-server
     tier: backend
   sessionAffinity: None
   type: NodePort
