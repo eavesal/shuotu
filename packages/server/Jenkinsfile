@@ -1,5 +1,5 @@
 pipeline{
-    agent{
+    agent {
         label "nodejs"
     }
 
@@ -9,12 +9,12 @@ pipeline{
 
         WORKING_SERVICE = 'server'
 
-        REGISTRY = 'hub.docker.com'
+        REGISTRY = 'registry.hub.docker.com'
         DOCKERHUB_NAMESPACE = 'lijingyu68'
         APP_NAME = 'shuotu.fun'
     }
 
-    stages{
+    stages {
 
         stage ('debug') {
             steps {
@@ -38,7 +38,7 @@ pipeline{
             }
         }
 
-        stage ("Build"){
+        stage ("Build") {
             steps {
                 container ('nodejs') {
                     dir ("packages/${WORKING_SERVICE}") {
@@ -70,7 +70,7 @@ pipeline{
                 branch 'master'
             }
             steps {
-                input(id: 'deploy-to-dev', message: 'deploy to dev?')
+                input(id: 'deploy-to-dev', message: 'deploy to shuotu-dev?')
                 kubernetesDeploy(configs: 'deploy/dev/**', enableConfigSubstitution: true, kubeconfigId: "$KUBECONFIG_CREDENTIAL_ID")
             }
         }

@@ -5,7 +5,6 @@ import { SequelizeModule } from '@nestjs/sequelize'
 import { join } from 'path'
 
 import { AppController } from './app.controller'
-import { AppService } from './app.service'
 import { GlobalEnvVars } from './global.type'
 import { AuthModule } from './modules/auth/auth.module'
 import { GameModule } from './modules/game/game.module'
@@ -44,6 +43,5 @@ import { UserModule } from './modules/user/user.module'
     GameModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
