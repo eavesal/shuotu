@@ -4,9 +4,9 @@ ENV NODE_ENV=production
 
 WORKDIR /usr/app
 
-COPY package*.json ./
+COPY package.json ./
 COPY .npmrc ./
-RUN yarn install --only=production
+RUN yarn install --prod
 
 COPY dist/main.js ./
 

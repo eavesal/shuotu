@@ -3,7 +3,6 @@
 
 # include files that should inside the docker container
 !package.json
-!package-lock.json
 !yarn.lock
 !dist/main.js
 !.npmrc
