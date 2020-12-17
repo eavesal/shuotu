@@ -23,17 +23,19 @@ pipeline{
 
         stage ("Install") {
             steps {
-                waitUntil {
-                    try {
-                        container ('nodejs') {
-                            dir ("packages/${WORKING_SERVICE}") {
-                                sh 'yarn install'
+                script {
+                    waitUntil {
+                        try {
+                            container ('nodejs') {
+                                dir ("packages/${WORKING_SERVICE}") {
+                                    sh 'yarn install'
+                                }
                             }
                         }
-                    }
-                    catch (err) {
-                        input "Retry?"
-                        false
+                        catch (err) {
+                            input "Retry?"
+                            false
+                        }
                     }
                 }
             }
@@ -41,24 +43,26 @@ pipeline{
 
         stage ("Build") {
             steps {
-                waitUntil {
-                    try {
-                        container ('nodejs') {
-                            dir ("packages/${WORKING_SERVICE}") {
-                                sh 'yarn run build'
-                                sh 'docker build -f Dockerfile -t $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER .'
-                                withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD', usernameVariable : 'DOCKER_USERNAME', credentialsId : "$DOCKER_CREDENTIAL_ID")]) {
-                                    sh 'echo "$DOCKER_PASSWORD" | docker login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
-                                    sh 'docker push $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER'
-                                    sh 'docker tag $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:latest'
-                                    sh 'docker push $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:latest '
-                                }
-                            }       
+                script {
+                    waitUntil {
+                        try {
+                            container ('nodejs') {
+                                dir ("packages/${WORKING_SERVICE}") {
+                                    sh 'yarn run build'
+                                    sh 'docker build -f Dockerfile -t $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER .'
+                                    withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD', usernameVariable : 'DOCKER_USERNAME', credentialsId : "$DOCKER_CREDENTIAL_ID")]) {
+                                        sh 'echo "$DOCKER_PASSWORD" | docker login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
+                                        sh 'docker push $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER'
+                                        sh 'docker tag $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:latest'
+                                        sh 'docker push $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:latest '
+                                    }
+                                }       
+                            }
                         }
-                    }
-                    catch (err) {
-                        input "Retry?"
-                        false
+                        catch (err) {
+                            input "Retry?"
+                            false
+                        }
                     }
                 }
             }
@@ -66,16 +70,18 @@ pipeline{
 
         stage ('deploy to dev') {
             steps {
-                waitUntil {
-                    try {
-                        input(id: 'deploy-to-dev', message: 'deploy to shuotu-dev?')
-                        dir ("packages/${WORKING_SERVICE}") {
-                            kubernetesDeploy(configs: 'deploy/dev/**', enableConfigSubstitution: true, kubeconfigId: "$KUBECONFIG_CREDENTIAL_ID")
+                script {
+                    waitUntil {
+                        try {
+                            input(id: 'deploy-to-dev', message: 'deploy to shuotu-dev?')
+                            dir ("packages/${WORKING_SERVICE}") {
+                                kubernetesDeploy(configs: 'deploy/dev/**', enableConfigSubstitution: true, kubeconfigId: "$KUBECONFIG_CREDENTIAL_ID")
+                            }
                         }
-                    }
-                    catch (err) {
-                        input "Retry?"
-                        false
+                        catch (err) {
+                            input "Retry?"
+                            false
+                        }
                     }
                 }
             }
