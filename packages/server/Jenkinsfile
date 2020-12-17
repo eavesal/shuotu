@@ -31,6 +31,7 @@ pipeline{
                                     sh 'yarn install'
                                 }
                             }
+                            true
                         }
                         catch (err) {
                             input "Retry?"
@@ -58,6 +59,7 @@ pipeline{
                                     }
                                 }       
                             }
+                            true
                         }
                         catch (err) {
                             input "Retry?"
@@ -77,6 +79,7 @@ pipeline{
                             dir ("packages/${WORKING_SERVICE}") {
                                 kubernetesDeploy(configs: 'deploy/dev/**', enableConfigSubstitution: true, kubeconfigId: "$KUBECONFIG_CREDENTIAL_ID")
                             }
+                            true
                         }
                         catch (err) {
                             input "Retry?"
