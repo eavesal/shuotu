@@ -31,7 +31,7 @@ pipeline{
                             }
                         }
                     }
-                    catch () {
+                    catch (err) {
                         input "Retry?"
                         false
                     }
@@ -56,7 +56,7 @@ pipeline{
                             }       
                         }
                     }
-                    catch () {
+                    catch (err) {
                         input "Retry?"
                         false
                     }
@@ -73,7 +73,7 @@ pipeline{
                             kubernetesDeploy(configs: 'deploy/dev/**', enableConfigSubstitution: true, kubeconfigId: "$KUBECONFIG_CREDENTIAL_ID")
                         }
                     }
-                    catch () {
+                    catch (err) {
                         input "Retry?"
                         false
                     }
